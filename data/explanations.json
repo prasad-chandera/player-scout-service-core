@@ -1,0 +1,85 @@
+{
+  "undervaluedDisclaimer": "Expected value = what equivalent skills have historically cost at auction; not a market prediction.",
+
+  "searchAliases": {
+    "bumrah": "bumrah01",
+    "jasprit bumrah": "bumrah01",
+    "boom": "bumrah01",
+    "sky": "sky01",
+    "suryakumar": "sky01",
+    "suryakumar yadav": "sky01",
+    "chahal": "chahal01",
+    "yuzvendra chahal": "chahal01",
+    "bhuvi": "bhuvi01",
+    "bhuvneshwar": "bhuvi01",
+    "gill": "gill01",
+    "shubman gill": "gill01",
+    "jadeja": "jadeja01",
+    "ravindra jadeja": "jadeja01",
+    "pandya": "pandya01",
+    "hardik": "pandya01",
+    "hardik pandya": "pandya01"
+  },
+
+  "explanations": {
+    "arjun-kumar": {
+      "summary": "Arjun Kumar is a death-overs specialist: economy 6.8 in overs 16–20 with a 47% dot-ball rate across 34 SMAT matches, both in the top decile of the domestic pool. His containment profile closely resembles established IPL death bowlers at the same career stage.",
+      "strengths": [
+        "Elite death-overs economy (6.8 across overs 16–20)",
+        "High dot-ball pressure (47% overall)",
+        "Above-average fielding (11 catches, 3 run-outs in 34 matches)"
+      ],
+      "weaknesses": [
+        "Powerplay economy is middling (7.4)",
+        "Limited sample against left-handers"
+      ],
+      "comparablePlayers": [
+        { "name": "Jasprit Bumrah", "note": "91% similar — near-identical death-overs containment shape" }
+      ]
+    },
+
+    "rahul-nair": {
+      "summary": "Rahul Nair rotates strike against spin at an elite rate: 41% singles with only 30% dot balls, and a strike rate of 143.8 in the middle overs where most domestic batters stall. He has anchored 9 successful chases in 28 innings.",
+      "strengths": [
+        "Elite strike rotation vs spin (41% singles, 30% dot balls)",
+        "Middle-overs SR 143.8 — accelerates where others consolidate",
+        "Chase record: averages 38.4 in successful pursuits"
+      ],
+      "weaknesses": [
+        "Powerplay strike rate is ordinary (124.1)",
+        "Boundary percentage (17%) below top-tier finishers"
+      ],
+      "comparablePlayers": [
+        { "name": "Suryakumar Yadav", "note": "similar middle-overs acceleration profile vs spin" }
+      ]
+    },
+
+    "imran-shaikh": {
+      "summary": "Imran Shaikh owns the powerplay: economy 6.1 with a 52% dot-ball rate and a wicket every 17 balls in overs 1–6. His death-overs numbers (economy 8.9) mark him as a new-ball specialist rather than a four-phase bowler.",
+      "strengths": [
+        "Exceptional powerplay economy (6.1) with genuine swing",
+        "New-ball wicket threat (5.8% wicket rate in overs 1–6)",
+        "52% powerplay dot-ball rate"
+      ],
+      "weaknesses": [
+        "Death-overs economy 8.9 — should be hidden late",
+        "Modest fielding contribution (7 catches in 41 matches)"
+      ],
+      "comparablePlayers": []
+    },
+
+    "bumrah01": {
+      "summary": "Jasprit Bumrah is the benchmark death bowler in this dataset: economy 6.8 in overs 16–20 with a 49% dot-ball rate and an 8.2% wicket rate at the death, across 133 IPL matches. He is the reference point the domestic pool is measured against, not a scouting target.",
+      "strengths": [
+        "Elite death-overs economy (6.8) at a 49% dot-ball rate",
+        "Wicket-taking at the death (8.2% wicket rate in overs 16–20)",
+        "Powerplay economy 6.9 — effective in all three phases"
+      ],
+      "weaknesses": [
+        "Middle-overs economy (7.6) is his weakest phase",
+        "Negligible batting contribution"
+      ],
+      "comparablePlayers": []
+    }
+  }
+}

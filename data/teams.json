@@ -1,0 +1,132 @@
+[
+  {
+    "id": "mi",
+    "name": "Mumbai Indians",
+    "short": "MI",
+    "colors": { "primary": "#045093", "secondary": "#B8860B" },
+    "needs": [
+      { "role": "death-bowler", "weight": 0.4, "label": "Death-overs bowler" },
+      { "role": "finisher", "weight": 0.35, "label": "Death-overs finisher" },
+      { "role": "spin-allrounder", "weight": 0.25, "label": "Spin-bowling all-rounder" }
+    ],
+    "budgetLakh": 650,
+    "prefersIndian": true
+  },
+  {
+    "id": "csk",
+    "name": "Chennai Super Kings",
+    "short": "CSK",
+    "colors": { "primary": "#F9CD05", "secondary": "#2B2A29" },
+    "needs": [
+      { "role": "powerplay-bowler", "weight": 0.4, "label": "New-ball bowler" },
+      { "role": "middle-order-spin-hitter", "weight": 0.35, "label": "Middle-order batter vs spin" },
+      { "role": "fielding", "weight": 0.25, "label": "Athletic fielders" }
+    ],
+    "budgetLakh": 550,
+    "prefersIndian": true
+  },
+  {
+    "id": "rcb",
+    "name": "Royal Challengers Bengaluru",
+    "short": "RCB",
+    "colors": { "primary": "#DA1818", "secondary": "#2B2A29" },
+    "needs": [
+      { "role": "death-bowler", "weight": 0.5, "label": "Death-overs bowler" },
+      { "role": "middle-order-spin-hitter", "weight": 0.3, "label": "Middle-order spin hitter" },
+      { "role": "spin-allrounder", "weight": 0.2, "label": "Spin-bowling all-rounder" }
+    ],
+    "budgetLakh": 800,
+    "prefersIndian": true
+  },
+  {
+    "id": "gt",
+    "name": "Gujarat Titans",
+    "short": "GT",
+    "colors": { "primary": "#1C2C4B", "secondary": "#C9A23F" },
+    "needs": [
+      { "role": "finisher", "weight": 0.45, "label": "Death-overs finisher" },
+      { "role": "powerplay-bowler", "weight": 0.3, "label": "New-ball bowler" },
+      { "role": "wicket-taking-spinner", "weight": 0.25, "label": "Middle-overs wicket-taker" }
+    ],
+    "budgetLakh": 700,
+    "prefersIndian": false
+  },
+  {
+    "id": "kkr",
+    "name": "Kolkata Knight Riders",
+    "short": "KKR",
+    "colors": { "primary": "#3A225D", "secondary": "#F2C12E" },
+    "needs": [
+      { "role": "powerplay-batter", "weight": 0.4, "label": "Powerplay opener" },
+      { "role": "death-bowler", "weight": 0.35, "label": "Death-overs bowler" },
+      { "role": "wicket-taking-spinner", "weight": 0.25, "label": "Wrist spinner" }
+    ],
+    "budgetLakh": 600,
+    "prefersIndian": true
+  },
+  {
+    "id": "dc",
+    "name": "Delhi Capitals",
+    "short": "DC",
+    "colors": { "primary": "#17479E", "secondary": "#EF1B23" },
+    "needs": [
+      { "role": "powerplay-batter", "weight": 0.4, "label": "Powerplay opener" },
+      { "role": "spin-allrounder", "weight": 0.35, "label": "Spin-bowling all-rounder" },
+      { "role": "death-bowler", "weight": 0.25, "label": "Death-overs bowler" }
+    ],
+    "budgetLakh": 620,
+    "prefersIndian": true
+  },
+  {
+    "id": "rr",
+    "name": "Rajasthan Royals",
+    "short": "RR",
+    "colors": { "primary": "#EA1A85", "secondary": "#254AA5" },
+    "needs": [
+      { "role": "wicket-taking-spinner", "weight": 0.4, "label": "Middle-overs wrist spinner" },
+      { "role": "finisher", "weight": 0.35, "label": "Death-overs finisher" },
+      { "role": "fielding", "weight": 0.25, "label": "Athletic fielders" }
+    ],
+    "budgetLakh": 480,
+    "prefersIndian": true
+  },
+  {
+    "id": "srh",
+    "name": "Sunrisers Hyderabad",
+    "short": "SRH",
+    "colors": { "primary": "#F26522", "secondary": "#000000" },
+    "needs": [
+      { "role": "death-bowler", "weight": 0.45, "label": "Death-overs bowler" },
+      { "role": "powerplay-batter", "weight": 0.3, "label": "Powerplay opener" },
+      { "role": "middle-order-spin-hitter", "weight": 0.25, "label": "Middle-order spin hitter" }
+    ],
+    "budgetLakh": 540,
+    "prefersIndian": false
+  },
+  {
+    "id": "pbks",
+    "name": "Punjab Kings",
+    "short": "PBKS",
+    "colors": { "primary": "#D71920", "secondary": "#DCDDDF" },
+    "needs": [
+      { "role": "powerplay-bowler", "weight": 0.4, "label": "New-ball bowler" },
+      { "role": "finisher", "weight": 0.35, "label": "Death-overs finisher" },
+      { "role": "spin-allrounder", "weight": 0.25, "label": "Spin-bowling all-rounder" }
+    ],
+    "budgetLakh": 720,
+    "prefersIndian": true
+  },
+  {
+    "id": "lsg",
+    "name": "Lucknow Super Giants",
+    "short": "LSG",
+    "colors": { "primary": "#0057E2", "secondary": "#A72056" },
+    "needs": [
+      { "role": "middle-order-spin-hitter", "weight": 0.4, "label": "Middle-order spin hitter" },
+      { "role": "wicket-taking-spinner", "weight": 0.3, "label": "Middle-overs wicket-taker" },
+      { "role": "powerplay-bowler", "weight": 0.3, "label": "New-ball bowler" }
+    ],
+    "budgetLakh": 660,
+    "prefersIndian": true
+  }
+]

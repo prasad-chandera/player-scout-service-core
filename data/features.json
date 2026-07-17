@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "features": [
+    { "key": "powerplayImpact", "label": "Powerplay impact", "index": 0, "higherIsBetter": true, "unit": "idx" },
+    { "key": "deathImpact", "label": "Death-overs impact", "index": 1, "higherIsBetter": true, "unit": "idx" },
+    { "key": "dotBallPct", "label": "Dot-ball %", "index": 2, "higherIsBetter": true, "unit": "%" },
+    { "key": "wicketOrBoundaryPct", "label": "Wicket / boundary %", "index": 3, "higherIsBetter": true, "unit": "%" },
+    { "key": "vsLeft", "label": "vs left-handers / spin", "index": 4, "higherIsBetter": true, "unit": "idx" },
+    { "key": "vsRight", "label": "vs right-handers / pace", "index": 5, "higherIsBetter": true, "unit": "idx" },
+    { "key": "containmentOrRotation", "label": "Containment / strike rotation", "index": 6, "higherIsBetter": true, "unit": "idx" },
+    { "key": "pressure", "label": "Pressure performance", "index": 7, "higherIsBetter": true, "unit": "idx" },
+    { "key": "fielding", "label": "Fielding", "index": 8, "higherIsBetter": true, "unit": "idx" },
+    { "key": "consistency", "label": "Consistency", "index": 9, "higherIsBetter": true, "unit": "idx" }
+  ]
+}

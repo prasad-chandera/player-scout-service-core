@@ -1,0 +1,3554 @@
+[
+  {
+    "id": "bumrah01",
+    "name": "Jasprit Bumrah",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm fast",
+    "age": 31,
+    "competition": "ipl",
+    "matches": 133,
+    "readiness": 92,
+    "expectedPriceLakh": 1800,
+    "expectedValueLakh": 1800,
+    "tags": [
+      "elite death bowling",
+      "top-decile dot-ball %",
+      "proven at IPL level"
+    ],
+    "rawStats": {
+      "ballsBowled": 3060,
+      "runsConceded": 3672,
+      "wickets": 165,
+      "economy": 7.2,
+      "powerplayEconomy": 6.9,
+      "deathEconomy": 6.8,
+      "dotBallPct": 0.49,
+      "catches": 24,
+      "runOuts": 5
+    },
+    "skillGroups": {
+      "batting": 0.12,
+      "bowling": 0.98,
+      "fielding": 0.58,
+      "pressure": 0.96,
+      "consistency": 0.94
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 6.9,
+        "wicketPct": 0.041,
+        "dotPct": 0.47
+      },
+      {
+        "phase": "middle",
+        "economy": 7.6,
+        "wicketPct": 0.045,
+        "dotPct": 0.38
+      },
+      {
+        "phase": "death",
+        "economy": 6.8,
+        "wicketPct": 0.082,
+        "dotPct": 0.49
+      }
+    ],
+    "featureVector": [
+      0.88,
+      0.98,
+      0.94,
+      0.9,
+      0.86,
+      0.91,
+      0.95,
+      0.96,
+      0.55,
+      0.94
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "sky01",
+    "name": "Suryakumar Yadav",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 34,
+    "competition": "ipl",
+    "matches": 139,
+    "readiness": 88,
+    "expectedPriceLakh": 1600,
+    "expectedValueLakh": 1600,
+    "tags": [
+      "360° boundary options",
+      "elite vs spin",
+      "middle-overs accelerator"
+    ],
+    "rawStats": {
+      "innings": 132,
+      "runs": 3982,
+      "ballsFaced": 2740,
+      "strikeRate": 145.3,
+      "boundaryPct": 0.21,
+      "dotBallPct": 0.29,
+      "catches": 61,
+      "runOuts": 4
+    },
+    "skillGroups": {
+      "batting": 0.97,
+      "bowling": 0.05,
+      "fielding": 0.78,
+      "pressure": 0.9,
+      "consistency": 0.88
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 131,
+        "dotPct": 0.38
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 148.5,
+        "dotPct": 0.27
+      },
+      {
+        "phase": "death",
+        "strikeRate": 168.2,
+        "dotPct": 0.21
+      }
+    ],
+    "featureVector": [
+      0.74,
+      0.92,
+      0.9,
+      0.93,
+      0.95,
+      0.88,
+      0.9,
+      0.9,
+      0.78,
+      0.88
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "chahal01",
+    "name": "Yuzvendra Chahal",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm leg-spin",
+    "age": 35,
+    "competition": "ipl",
+    "matches": 160,
+    "readiness": 68,
+    "expectedPriceLakh": 1100,
+    "expectedValueLakh": 1100,
+    "tags": [
+      "middle-overs wicket-taker",
+      "elite googly",
+      "proven at IPL level"
+    ],
+    "rawStats": {
+      "ballsBowled": 3480,
+      "runsConceded": 4524,
+      "wickets": 205,
+      "economy": 7.8,
+      "powerplayEconomy": 8.4,
+      "deathEconomy": 8.7,
+      "dotBallPct": 0.38,
+      "catches": 31,
+      "runOuts": 4
+    },
+    "skillGroups": {
+      "batting": 0.08,
+      "bowling": 0.9,
+      "fielding": 0.54,
+      "pressure": 0.82,
+      "consistency": 0.88
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 8.4,
+        "wicketPct": 0.031,
+        "dotPct": 0.34
+      },
+      {
+        "phase": "middle",
+        "economy": 7.4,
+        "wicketPct": 0.078,
+        "dotPct": 0.41
+      },
+      {
+        "phase": "death",
+        "economy": 8.7,
+        "wicketPct": 0.052,
+        "dotPct": 0.32
+      }
+    ],
+    "featureVector": [
+      0.46,
+      0.54,
+      0.68,
+      0.96,
+      0.66,
+      0.92,
+      0.7,
+      0.82,
+      0.54,
+      0.88
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "bhuvi01",
+    "name": "Bhuvneshwar Kumar",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm medium-fast",
+    "age": 35,
+    "competition": "ipl",
+    "matches": 176,
+    "readiness": 76,
+    "expectedPriceLakh": 1050,
+    "expectedValueLakh": 1050,
+    "tags": [
+      "exceptional powerplay economy",
+      "new-ball swing",
+      "proven at IPL level"
+    ],
+    "rawStats": {
+      "ballsBowled": 3840,
+      "runsConceded": 4838,
+      "wickets": 181,
+      "economy": 7.56,
+      "powerplayEconomy": 6.4,
+      "deathEconomy": 8.8,
+      "dotBallPct": 0.44,
+      "catches": 28,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.16,
+      "bowling": 0.88,
+      "fielding": 0.56,
+      "pressure": 0.78,
+      "consistency": 0.9
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 6.4,
+        "wicketPct": 0.055,
+        "dotPct": 0.5
+      },
+      {
+        "phase": "middle",
+        "economy": 7.7,
+        "wicketPct": 0.041,
+        "dotPct": 0.39
+      },
+      {
+        "phase": "death",
+        "economy": 8.8,
+        "wicketPct": 0.058,
+        "dotPct": 0.35
+      }
+    ],
+    "featureVector": [
+      0.92,
+      0.52,
+      0.84,
+      0.88,
+      0.74,
+      0.86,
+      0.8,
+      0.78,
+      0.56,
+      0.9
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "gill01",
+    "name": "Shubman Gill",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 26,
+    "competition": "ipl",
+    "matches": 103,
+    "readiness": 76,
+    "expectedPriceLakh": 1400,
+    "expectedValueLakh": 1400,
+    "tags": [
+      "powerplay anchor",
+      "strong vs pace",
+      "high consistency"
+    ],
+    "rawStats": {
+      "innings": 101,
+      "runs": 3220,
+      "ballsFaced": 2440,
+      "strikeRate": 132,
+      "boundaryPct": 0.19,
+      "dotBallPct": 0.34,
+      "catches": 39,
+      "runOuts": 5
+    },
+    "skillGroups": {
+      "batting": 0.9,
+      "bowling": 0.03,
+      "fielding": 0.68,
+      "pressure": 0.76,
+      "consistency": 0.92
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 138.6,
+        "dotPct": 0.36
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 126.4,
+        "dotPct": 0.34
+      },
+      {
+        "phase": "death",
+        "strikeRate": 152.8,
+        "dotPct": 0.28
+      }
+    ],
+    "featureVector": [
+      0.9,
+      0.66,
+      0.74,
+      0.76,
+      0.62,
+      0.94,
+      0.78,
+      0.76,
+      0.68,
+      0.92
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "jadeja01",
+    "name": "Ravindra Jadeja",
+    "role": "allrounder",
+    "battingHand": "left",
+    "bowlingStyle": "left-arm orthodox",
+    "age": 37,
+    "competition": "ipl",
+    "matches": 240,
+    "readiness": 79,
+    "expectedPriceLakh": 1300,
+    "expectedValueLakh": 1300,
+    "tags": [
+      "two-way middle-overs value",
+      "elite fielding",
+      "proven at IPL level"
+    ],
+    "rawStats": {
+      "runs": 2900,
+      "strikeRate": 130.4,
+      "ballsBowled": 3180,
+      "economy": 7.6,
+      "wickets": 160,
+      "dotBallPct": 0.4,
+      "catches": 98,
+      "runOuts": 18
+    },
+    "skillGroups": {
+      "batting": 0.74,
+      "bowling": 0.82,
+      "fielding": 0.98,
+      "pressure": 0.84,
+      "consistency": 0.9
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.5,
+        "strikeRate": 118,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "middle",
+        "economy": 7.2,
+        "strikeRate": 126.8,
+        "dotPct": 0.41
+      },
+      {
+        "phase": "death",
+        "economy": 8.4,
+        "strikeRate": 162.4,
+        "dotPct": 0.31
+      }
+    ],
+    "featureVector": [
+      0.68,
+      0.76,
+      0.76,
+      0.8,
+      0.88,
+      0.72,
+      0.84,
+      0.84,
+      0.98,
+      0.9
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "pandya01",
+    "name": "Hardik Pandya",
+    "role": "allrounder",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm fast-medium",
+    "age": 32,
+    "competition": "ipl",
+    "matches": 148,
+    "readiness": 77,
+    "expectedPriceLakh": 1500,
+    "expectedValueLakh": 1500,
+    "tags": [
+      "death-overs finisher",
+      "hard-length seam",
+      "proven at IPL level"
+    ],
+    "rawStats": {
+      "runs": 2600,
+      "strikeRate": 147.2,
+      "ballsBowled": 1620,
+      "economy": 8.9,
+      "wickets": 68,
+      "dotBallPct": 0.33,
+      "catches": 52,
+      "runOuts": 6
+    },
+    "skillGroups": {
+      "batting": 0.86,
+      "bowling": 0.66,
+      "fielding": 0.74,
+      "pressure": 0.86,
+      "consistency": 0.76
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 8.6,
+        "strikeRate": 122.4,
+        "dotPct": 0.36
+      },
+      {
+        "phase": "middle",
+        "economy": 8.7,
+        "strikeRate": 138.6,
+        "dotPct": 0.33
+      },
+      {
+        "phase": "death",
+        "economy": 9.4,
+        "strikeRate": 178.5,
+        "dotPct": 0.26
+      }
+    ],
+    "featureVector": [
+      0.6,
+      0.9,
+      0.62,
+      0.86,
+      0.68,
+      0.8,
+      0.68,
+      0.86,
+      0.74,
+      0.76
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "axar01",
+    "name": "Axar Patel",
+    "role": "allrounder",
+    "battingHand": "left",
+    "bowlingStyle": "left-arm orthodox",
+    "age": 32,
+    "competition": "ipl",
+    "matches": 157,
+    "readiness": 74,
+    "expectedPriceLakh": 1000,
+    "expectedValueLakh": 1000,
+    "tags": [
+      "spin control",
+      "middle-overs squeeze",
+      "lower-order hitting"
+    ],
+    "rawStats": {
+      "runs": 1740,
+      "strikeRate": 134.8,
+      "ballsBowled": 2760,
+      "economy": 7.3,
+      "wickets": 118,
+      "dotBallPct": 0.42,
+      "catches": 54,
+      "runOuts": 7
+    },
+    "skillGroups": {
+      "batting": 0.68,
+      "bowling": 0.8,
+      "fielding": 0.76,
+      "pressure": 0.74,
+      "consistency": 0.86
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7,
+        "strikeRate": 114,
+        "dotPct": 0.45
+      },
+      {
+        "phase": "middle",
+        "economy": 7.1,
+        "strikeRate": 130.2,
+        "dotPct": 0.43
+      },
+      {
+        "phase": "death",
+        "economy": 8.6,
+        "strikeRate": 158,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.72,
+      0.66,
+      0.8,
+      0.72,
+      0.9,
+      0.66,
+      0.82,
+      0.74,
+      0.76,
+      0.86
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "arjun-kumar",
+    "name": "Arjun Kumar",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm fast",
+    "age": 24,
+    "competition": "smat",
+    "matches": 34,
+    "readiness": 85,
+    "expectedPriceLakh": 40,
+    "expectedValueLakh": 420,
+    "tags": [
+      "elite death bowling",
+      "high dot-ball %",
+      "strong fielding"
+    ],
+    "rawStats": {
+      "ballsBowled": 742,
+      "runsConceded": 858,
+      "wickets": 41,
+      "economy": 6.94,
+      "powerplayEconomy": 7.4,
+      "deathEconomy": 6.8,
+      "dotBallPct": 0.47,
+      "catches": 11,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.21,
+      "bowling": 0.93,
+      "fielding": 0.66,
+      "pressure": 0.91,
+      "consistency": 0.84
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.4,
+        "wicketPct": 0.031,
+        "dotPct": 0.44
+      },
+      {
+        "phase": "middle",
+        "economy": 7.1,
+        "wicketPct": 0.048,
+        "dotPct": 0.41
+      },
+      {
+        "phase": "death",
+        "economy": 6.8,
+        "wicketPct": 0.072,
+        "dotPct": 0.47
+      }
+    ],
+    "featureVector": [
+      0.66,
+      0.95,
+      0.89,
+      0.8,
+      0.74,
+      0.85,
+      0.9,
+      0.91,
+      0.7,
+      0.84
+    ],
+    "coverage": {
+      "vsLeft": false,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "rahul-nair",
+    "name": "Rahul Nair",
+    "role": "batter",
+    "battingHand": "left",
+    "age": 23,
+    "competition": "smat",
+    "matches": 29,
+    "readiness": 81,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 350,
+    "tags": [
+      "elite strike rotation vs spin",
+      "chase specialist",
+      "low dot-ball %"
+    ],
+    "rawStats": {
+      "innings": 28,
+      "runs": 987,
+      "ballsFaced": 702,
+      "strikeRate": 140.6,
+      "boundaryPct": 0.17,
+      "dotBallPct": 0.3,
+      "singlesPct": 0.41,
+      "catches": 14,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.9,
+      "bowling": 0.08,
+      "fielding": 0.72,
+      "pressure": 0.88,
+      "consistency": 0.81
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 124.1,
+        "dotPct": 0.41
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 143.8,
+        "dotPct": 0.27
+      },
+      {
+        "phase": "death",
+        "strikeRate": 158.9,
+        "dotPct": 0.22
+      }
+    ],
+    "featureVector": [
+      0.62,
+      0.84,
+      0.88,
+      0.72,
+      0.93,
+      0.78,
+      0.92,
+      0.88,
+      0.72,
+      0.81
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "imran-shaikh",
+    "name": "Imran Shaikh",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "left-arm medium-fast",
+    "age": 26,
+    "competition": "smat",
+    "matches": 41,
+    "readiness": 73,
+    "expectedPriceLakh": 40,
+    "expectedValueLakh": 280,
+    "tags": [
+      "exceptional powerplay economy",
+      "new-ball wickets",
+      "swing threat"
+    ],
+    "rawStats": {
+      "ballsBowled": 912,
+      "runsConceded": 1104,
+      "wickets": 44,
+      "economy": 7.26,
+      "powerplayEconomy": 6.1,
+      "deathEconomy": 8.9,
+      "dotBallPct": 0.45,
+      "catches": 7,
+      "runOuts": 1
+    },
+    "skillGroups": {
+      "batting": 0.15,
+      "bowling": 0.86,
+      "fielding": 0.52,
+      "pressure": 0.74,
+      "consistency": 0.79
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 6.1,
+        "wicketPct": 0.058,
+        "dotPct": 0.52
+      },
+      {
+        "phase": "middle",
+        "economy": 7.8,
+        "wicketPct": 0.039,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "death",
+        "economy": 8.9,
+        "wicketPct": 0.05,
+        "dotPct": 0.33
+      }
+    ],
+    "featureVector": [
+      0.94,
+      0.48,
+      0.85,
+      0.86,
+      0.7,
+      0.82,
+      0.78,
+      0.74,
+      0.5,
+      0.79
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "dev-patel",
+    "name": "Dev Patel",
+    "role": "allrounder",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm off-spin",
+    "age": 25,
+    "competition": "smat",
+    "matches": 37,
+    "readiness": 69,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 190,
+    "tags": [
+      "two-way middle-overs value",
+      "spin control",
+      "finisher potential"
+    ],
+    "rawStats": {
+      "runs": 612,
+      "strikeRate": 132.4,
+      "ballsBowled": 486,
+      "economy": 7.4,
+      "wickets": 21,
+      "dotBallPct": 0.38,
+      "catches": 16,
+      "runOuts": 4
+    },
+    "skillGroups": {
+      "batting": 0.68,
+      "bowling": 0.7,
+      "fielding": 0.8,
+      "pressure": 0.72,
+      "consistency": 0.74
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.9,
+        "strikeRate": 118.2,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "middle",
+        "economy": 7.1,
+        "strikeRate": 129.5,
+        "dotPct": 0.39
+      },
+      {
+        "phase": "death",
+        "economy": 8.2,
+        "strikeRate": 151.7,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.58,
+      0.7,
+      0.72,
+      0.66,
+      0.76,
+      0.64,
+      0.74,
+      0.72,
+      0.8,
+      0.74
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "kiran-yadav",
+    "name": "Kiran Yadav",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 27,
+    "competition": "smat",
+    "matches": 44,
+    "readiness": 71,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 150,
+    "tags": [
+      "death-overs hitter",
+      "high boundary %",
+      "six-hitting range"
+    ],
+    "rawStats": {
+      "innings": 41,
+      "runs": 1104,
+      "ballsFaced": 738,
+      "strikeRate": 149.6,
+      "boundaryPct": 0.24,
+      "dotBallPct": 0.37,
+      "catches": 12,
+      "runOuts": 1
+    },
+    "skillGroups": {
+      "batting": 0.82,
+      "bowling": 0.04,
+      "fielding": 0.6,
+      "pressure": 0.7,
+      "consistency": 0.62
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 128.4,
+        "dotPct": 0.43
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 141.2,
+        "dotPct": 0.36
+      },
+      {
+        "phase": "death",
+        "strikeRate": 171.4,
+        "dotPct": 0.28
+      }
+    ],
+    "featureVector": [
+      0.55,
+      0.9,
+      0.62,
+      0.88,
+      0.6,
+      0.76,
+      0.58,
+      0.7,
+      0.6,
+      0.62
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "sandeep-rao",
+    "name": "Sandeep Rao",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm leg-spin",
+    "age": 22,
+    "competition": "smat",
+    "matches": 26,
+    "readiness": 62,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 130,
+    "tags": [
+      "middle-overs wicket-taker",
+      "googly threat",
+      "attacks right-handers"
+    ],
+    "rawStats": {
+      "ballsBowled": 564,
+      "runsConceded": 702,
+      "wickets": 33,
+      "economy": 7.47,
+      "powerplayEconomy": 8.2,
+      "deathEconomy": 8.4,
+      "dotBallPct": 0.39,
+      "catches": 5,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.1,
+      "bowling": 0.78,
+      "fielding": 0.48,
+      "pressure": 0.66,
+      "consistency": 0.68
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 8.2,
+        "wicketPct": 0.028,
+        "dotPct": 0.36
+      },
+      {
+        "phase": "middle",
+        "economy": 6.9,
+        "wicketPct": 0.071,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "death",
+        "economy": 8.4,
+        "wicketPct": 0.046,
+        "dotPct": 0.31
+      }
+    ],
+    "featureVector": [
+      0.42,
+      0.5,
+      0.68,
+      0.92,
+      0.58,
+      0.84,
+      0.66,
+      0.66,
+      0.46,
+      0.68
+    ],
+    "coverage": {
+      "vsLeft": false,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "manish-tiwari",
+    "name": "Manish Tiwari",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 28,
+    "competition": "smat",
+    "matches": 52,
+    "readiness": 68,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 110,
+    "tags": [
+      "powerplay anchor",
+      "strong vs pace",
+      "high consistency"
+    ],
+    "rawStats": {
+      "innings": 50,
+      "runs": 1490,
+      "ballsFaced": 1122,
+      "strikeRate": 132.8,
+      "boundaryPct": 0.18,
+      "dotBallPct": 0.35,
+      "catches": 20,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.76,
+      "bowling": 0.05,
+      "fielding": 0.64,
+      "pressure": 0.6,
+      "consistency": 0.84
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 139.5,
+        "dotPct": 0.34
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 128.7,
+        "dotPct": 0.36
+      },
+      {
+        "phase": "death",
+        "strikeRate": 144.1,
+        "dotPct": 0.31
+      }
+    ],
+    "featureVector": [
+      0.86,
+      0.6,
+      0.7,
+      0.66,
+      0.56,
+      0.9,
+      0.72,
+      0.6,
+      0.64,
+      0.84
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "vivek-menon",
+    "name": "Vivek Menon",
+    "role": "bowler",
+    "battingHand": "left",
+    "bowlingStyle": "left-arm orthodox",
+    "age": 29,
+    "competition": "smat",
+    "matches": 48,
+    "readiness": 63,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 95,
+    "tags": [
+      "middle-overs control",
+      "economical vs left-handers",
+      "experienced"
+    ],
+    "rawStats": {
+      "ballsBowled": 1044,
+      "runsConceded": 1236,
+      "wickets": 39,
+      "economy": 7.1,
+      "powerplayEconomy": 7,
+      "deathEconomy": 8.6,
+      "dotBallPct": 0.41,
+      "catches": 9,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.18,
+      "bowling": 0.72,
+      "fielding": 0.5,
+      "pressure": 0.58,
+      "consistency": 0.8
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7,
+        "wicketPct": 0.03,
+        "dotPct": 0.43
+      },
+      {
+        "phase": "middle",
+        "economy": 6.8,
+        "wicketPct": 0.042,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "death",
+        "economy": 8.6,
+        "wicketPct": 0.038,
+        "dotPct": 0.29
+      }
+    ],
+    "featureVector": [
+      0.68,
+      0.44,
+      0.74,
+      0.62,
+      0.88,
+      0.6,
+      0.76,
+      0.58,
+      0.48,
+      0.8
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "aditya-verma",
+    "name": "Aditya Verma",
+    "role": "allrounder",
+    "battingHand": "left",
+    "bowlingStyle": "right-arm medium",
+    "age": 21,
+    "competition": "smat",
+    "matches": 18,
+    "readiness": 62,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 80,
+    "tags": [
+      "young two-way prospect",
+      "pressure chaser",
+      "small sample"
+    ],
+    "rawStats": {
+      "runs": 384,
+      "strikeRate": 136.2,
+      "ballsBowled": 288,
+      "economy": 8.1,
+      "wickets": 12,
+      "dotBallPct": 0.34,
+      "catches": 8,
+      "runOuts": 1
+    },
+    "skillGroups": {
+      "batting": 0.62,
+      "bowling": 0.54,
+      "fielding": 0.7,
+      "pressure": 0.76,
+      "consistency": 0.5
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 8.4,
+        "strikeRate": 121,
+        "dotPct": 0.37
+      },
+      {
+        "phase": "middle",
+        "economy": 7.9,
+        "strikeRate": 133.6,
+        "dotPct": 0.34
+      },
+      {
+        "phase": "death",
+        "economy": 8.3,
+        "strikeRate": 155.2,
+        "dotPct": 0.29
+      }
+    ],
+    "featureVector": [
+      0.5,
+      0.62,
+      0.58,
+      0.6,
+      0.64,
+      0.62,
+      0.6,
+      0.76,
+      0.7,
+      0.5
+    ],
+    "coverage": {
+      "vsLeft": false,
+      "vsRight": true,
+      "deathOvers": false
+    }
+  },
+  {
+    "id": "farhan-qureshi",
+    "name": "Farhan Qureshi",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm fast",
+    "age": 25,
+    "competition": "smat",
+    "matches": 38,
+    "readiness": 84,
+    "expectedPriceLakh": 40,
+    "expectedValueLakh": 400,
+    "tags": [
+      "elite death bowling",
+      "yorker-length containment",
+      "high dot-ball %"
+    ],
+    "rawStats": {
+      "ballsBowled": 828,
+      "runsConceded": 972,
+      "wickets": 45,
+      "economy": 7.04,
+      "powerplayEconomy": 7.2,
+      "deathEconomy": 6.9,
+      "dotBallPct": 0.46,
+      "catches": 9,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.18,
+      "bowling": 0.91,
+      "fielding": 0.6,
+      "pressure": 0.89,
+      "consistency": 0.82
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.2,
+        "wicketPct": 0.035,
+        "dotPct": 0.45
+      },
+      {
+        "phase": "middle",
+        "economy": 7.3,
+        "wicketPct": 0.05,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "death",
+        "economy": 6.9,
+        "wicketPct": 0.069,
+        "dotPct": 0.46
+      }
+    ],
+    "featureVector": [
+      0.7,
+      0.93,
+      0.87,
+      0.82,
+      0.72,
+      0.83,
+      0.88,
+      0.89,
+      0.6,
+      0.82
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "nikhil-desai",
+    "name": "Nikhil Desai",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm fast-medium",
+    "age": 27,
+    "competition": "smat",
+    "matches": 45,
+    "readiness": 80,
+    "expectedPriceLakh": 40,
+    "expectedValueLakh": 310,
+    "tags": [
+      "death-overs containment",
+      "hard lengths",
+      "reliable fielder"
+    ],
+    "rawStats": {
+      "ballsBowled": 990,
+      "runsConceded": 1188,
+      "wickets": 47,
+      "economy": 7.2,
+      "powerplayEconomy": 7.6,
+      "deathEconomy": 7.1,
+      "dotBallPct": 0.44,
+      "catches": 13,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.2,
+      "bowling": 0.87,
+      "fielding": 0.7,
+      "pressure": 0.84,
+      "consistency": 0.8
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.6,
+        "wicketPct": 0.033,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "middle",
+        "economy": 7.2,
+        "wicketPct": 0.047,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "death",
+        "economy": 7.1,
+        "wicketPct": 0.064,
+        "dotPct": 0.44
+      }
+    ],
+    "featureVector": [
+      0.64,
+      0.88,
+      0.83,
+      0.78,
+      0.7,
+      0.8,
+      0.85,
+      0.84,
+      0.7,
+      0.8
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "tarun-bose",
+    "name": "Tarun Bose",
+    "role": "bowler",
+    "battingHand": "left",
+    "bowlingStyle": "left-arm fast-medium",
+    "age": 23,
+    "competition": "smat",
+    "matches": 31,
+    "readiness": 77,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 265,
+    "tags": [
+      "angles across right-handers",
+      "death-overs containment",
+      "young prospect"
+    ],
+    "rawStats": {
+      "ballsBowled": 678,
+      "runsConceded": 826,
+      "wickets": 34,
+      "economy": 7.31,
+      "powerplayEconomy": 7.1,
+      "deathEconomy": 7.4,
+      "dotBallPct": 0.43,
+      "catches": 6,
+      "runOuts": 1
+    },
+    "skillGroups": {
+      "batting": 0.14,
+      "bowling": 0.84,
+      "fielding": 0.54,
+      "pressure": 0.8,
+      "consistency": 0.74
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.1,
+        "wicketPct": 0.04,
+        "dotPct": 0.46
+      },
+      {
+        "phase": "middle",
+        "economy": 7.5,
+        "wicketPct": 0.044,
+        "dotPct": 0.39
+      },
+      {
+        "phase": "death",
+        "economy": 7.4,
+        "wicketPct": 0.06,
+        "dotPct": 0.42
+      }
+    ],
+    "featureVector": [
+      0.74,
+      0.82,
+      0.8,
+      0.76,
+      0.86,
+      0.66,
+      0.8,
+      0.8,
+      0.54,
+      0.74
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "harpreet-gill",
+    "name": "Harpreet Gill",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm off-spin",
+    "age": 28,
+    "competition": "smat",
+    "matches": 47,
+    "readiness": 71,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 185,
+    "tags": [
+      "powerplay spin",
+      "middle-overs squeeze",
+      "experienced"
+    ],
+    "rawStats": {
+      "ballsBowled": 1020,
+      "runsConceded": 1207,
+      "wickets": 42,
+      "economy": 7.1,
+      "powerplayEconomy": 6.8,
+      "deathEconomy": 8.5,
+      "dotBallPct": 0.42,
+      "catches": 11,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.22,
+      "bowling": 0.8,
+      "fielding": 0.58,
+      "pressure": 0.68,
+      "consistency": 0.82
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 6.8,
+        "wicketPct": 0.043,
+        "dotPct": 0.48
+      },
+      {
+        "phase": "middle",
+        "economy": 6.9,
+        "wicketPct": 0.05,
+        "dotPct": 0.43
+      },
+      {
+        "phase": "death",
+        "economy": 8.5,
+        "wicketPct": 0.041,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.86,
+      0.52,
+      0.8,
+      0.72,
+      0.84,
+      0.64,
+      0.82,
+      0.68,
+      0.58,
+      0.82
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "prithvi-salunke",
+    "name": "Prithvi Salunke",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm leg-spin",
+    "age": 24,
+    "competition": "smat",
+    "matches": 33,
+    "readiness": 66,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 160,
+    "tags": [
+      "middle-overs wicket-taker",
+      "wrong-un threat",
+      "attacks right-handers"
+    ],
+    "rawStats": {
+      "ballsBowled": 714,
+      "runsConceded": 892,
+      "wickets": 40,
+      "economy": 7.5,
+      "powerplayEconomy": 8,
+      "deathEconomy": 8.3,
+      "dotBallPct": 0.4,
+      "catches": 7,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.12,
+      "bowling": 0.79,
+      "fielding": 0.52,
+      "pressure": 0.7,
+      "consistency": 0.7
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 8,
+        "wicketPct": 0.03,
+        "dotPct": 0.37
+      },
+      {
+        "phase": "middle",
+        "economy": 7,
+        "wicketPct": 0.074,
+        "dotPct": 0.43
+      },
+      {
+        "phase": "death",
+        "economy": 8.3,
+        "wicketPct": 0.048,
+        "dotPct": 0.32
+      }
+    ],
+    "featureVector": [
+      0.46,
+      0.54,
+      0.7,
+      0.94,
+      0.6,
+      0.86,
+      0.7,
+      0.7,
+      0.52,
+      0.7
+    ],
+    "coverage": {
+      "vsLeft": false,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "zaid-ansari",
+    "name": "Zaid Ansari",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm medium-fast",
+    "age": 26,
+    "competition": "smat",
+    "matches": 40,
+    "readiness": 69,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 145,
+    "tags": [
+      "new-ball swing",
+      "powerplay economy",
+      "wicket-taker up front"
+    ],
+    "rawStats": {
+      "ballsBowled": 864,
+      "runsConceded": 1080,
+      "wickets": 38,
+      "economy": 7.5,
+      "powerplayEconomy": 6.6,
+      "deathEconomy": 9.1,
+      "dotBallPct": 0.43,
+      "catches": 8,
+      "runOuts": 1
+    },
+    "skillGroups": {
+      "batting": 0.16,
+      "bowling": 0.76,
+      "fielding": 0.56,
+      "pressure": 0.62,
+      "consistency": 0.72
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 6.6,
+        "wicketPct": 0.052,
+        "dotPct": 0.5
+      },
+      {
+        "phase": "middle",
+        "economy": 7.9,
+        "wicketPct": 0.036,
+        "dotPct": 0.39
+      },
+      {
+        "phase": "death",
+        "economy": 9.1,
+        "wicketPct": 0.044,
+        "dotPct": 0.31
+      }
+    ],
+    "featureVector": [
+      0.9,
+      0.44,
+      0.81,
+      0.8,
+      0.66,
+      0.78,
+      0.74,
+      0.62,
+      0.56,
+      0.72
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "gaurav-mishra",
+    "name": "Gaurav Mishra",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm off-spin",
+    "age": 30,
+    "competition": "smat",
+    "matches": 56,
+    "readiness": 67,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 125,
+    "tags": [
+      "middle-overs control",
+      "high consistency",
+      "economical vs left-handers"
+    ],
+    "rawStats": {
+      "ballsBowled": 1224,
+      "runsConceded": 1448,
+      "wickets": 44,
+      "economy": 7.1,
+      "powerplayEconomy": 7.2,
+      "deathEconomy": 8.4,
+      "dotBallPct": 0.41,
+      "catches": 12,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.2,
+      "bowling": 0.74,
+      "fielding": 0.6,
+      "pressure": 0.6,
+      "consistency": 0.86
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.2,
+        "wicketPct": 0.032,
+        "dotPct": 0.44
+      },
+      {
+        "phase": "middle",
+        "economy": 6.7,
+        "wicketPct": 0.048,
+        "dotPct": 0.44
+      },
+      {
+        "phase": "death",
+        "economy": 8.4,
+        "wicketPct": 0.04,
+        "dotPct": 0.31
+      }
+    ],
+    "featureVector": [
+      0.7,
+      0.5,
+      0.76,
+      0.66,
+      0.86,
+      0.62,
+      0.8,
+      0.6,
+      0.6,
+      0.86
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "yash-thakur",
+    "name": "Yash Thakur",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm fast",
+    "age": 22,
+    "competition": "smat",
+    "matches": 24,
+    "readiness": 70,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 118,
+    "tags": [
+      "raw pace",
+      "death-overs potential",
+      "small sample"
+    ],
+    "rawStats": {
+      "ballsBowled": 498,
+      "runsConceded": 638,
+      "wickets": 26,
+      "economy": 7.69,
+      "powerplayEconomy": 7.8,
+      "deathEconomy": 7.6,
+      "dotBallPct": 0.4,
+      "catches": 4,
+      "runOuts": 1
+    },
+    "skillGroups": {
+      "batting": 0.11,
+      "bowling": 0.74,
+      "fielding": 0.5,
+      "pressure": 0.68,
+      "consistency": 0.56
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.8,
+        "wicketPct": 0.038,
+        "dotPct": 0.41
+      },
+      {
+        "phase": "middle",
+        "economy": 7.7,
+        "wicketPct": 0.042,
+        "dotPct": 0.38
+      },
+      {
+        "phase": "death",
+        "economy": 7.6,
+        "wicketPct": 0.058,
+        "dotPct": 0.42
+      }
+    ],
+    "featureVector": [
+      0.58,
+      0.78,
+      0.72,
+      0.74,
+      0.62,
+      0.74,
+      0.74,
+      0.68,
+      0.5,
+      0.56
+    ],
+    "coverage": {
+      "vsLeft": false,
+      "vsRight": true,
+      "deathOvers": false
+    }
+  },
+  {
+    "id": "sanjay-pillai",
+    "name": "Sanjay Pillai",
+    "role": "bowler",
+    "battingHand": "left",
+    "bowlingStyle": "left-arm orthodox",
+    "age": 31,
+    "competition": "smat",
+    "matches": 61,
+    "readiness": 63,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 100,
+    "tags": [
+      "experienced spinner",
+      "middle-overs control",
+      "economical vs left-handers"
+    ],
+    "rawStats": {
+      "ballsBowled": 1320,
+      "runsConceded": 1584,
+      "wickets": 46,
+      "economy": 7.2,
+      "powerplayEconomy": 7.4,
+      "deathEconomy": 8.7,
+      "dotBallPct": 0.4,
+      "catches": 14,
+      "runOuts": 4
+    },
+    "skillGroups": {
+      "batting": 0.24,
+      "bowling": 0.71,
+      "fielding": 0.58,
+      "pressure": 0.56,
+      "consistency": 0.84
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.4,
+        "wicketPct": 0.028,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "middle",
+        "economy": 6.9,
+        "wicketPct": 0.046,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "death",
+        "economy": 8.7,
+        "wicketPct": 0.036,
+        "dotPct": 0.28
+      }
+    ],
+    "featureVector": [
+      0.66,
+      0.42,
+      0.74,
+      0.64,
+      0.9,
+      0.58,
+      0.78,
+      0.56,
+      0.58,
+      0.84
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "mohit-chandel",
+    "name": "Mohit Chandel",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm medium",
+    "age": 29,
+    "competition": "smat",
+    "matches": 43,
+    "readiness": 63,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 92,
+    "tags": [
+      "change-of-pace specialist",
+      "middle-overs filler",
+      "steady"
+    ],
+    "rawStats": {
+      "ballsBowled": 912,
+      "runsConceded": 1155,
+      "wickets": 32,
+      "economy": 7.6,
+      "powerplayEconomy": 7.9,
+      "deathEconomy": 8.2,
+      "dotBallPct": 0.38,
+      "catches": 9,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.19,
+      "bowling": 0.68,
+      "fielding": 0.56,
+      "pressure": 0.58,
+      "consistency": 0.76
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.9,
+        "wicketPct": 0.03,
+        "dotPct": 0.39
+      },
+      {
+        "phase": "middle",
+        "economy": 7.2,
+        "wicketPct": 0.044,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "death",
+        "economy": 8.2,
+        "wicketPct": 0.042,
+        "dotPct": 0.34
+      }
+    ],
+    "featureVector": [
+      0.56,
+      0.6,
+      0.68,
+      0.64,
+      0.62,
+      0.66,
+      0.7,
+      0.58,
+      0.56,
+      0.76
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "abhinav-rathi",
+    "name": "Abhinav Rathi",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm leg-spin",
+    "age": 20,
+    "competition": "smat",
+    "matches": 16,
+    "readiness": 57,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 78,
+    "tags": [
+      "young wrist spinner",
+      "wicket-taking potential",
+      "small sample"
+    ],
+    "rawStats": {
+      "ballsBowled": 348,
+      "runsConceded": 464,
+      "wickets": 21,
+      "economy": 8,
+      "powerplayEconomy": 8.6,
+      "deathEconomy": 8.8,
+      "dotBallPct": 0.36,
+      "catches": 3,
+      "runOuts": 0
+    },
+    "skillGroups": {
+      "batting": 0.08,
+      "bowling": 0.66,
+      "fielding": 0.42,
+      "pressure": 0.6,
+      "consistency": 0.46
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 8.6,
+        "wicketPct": 0.026,
+        "dotPct": 0.33
+      },
+      {
+        "phase": "middle",
+        "economy": 7.4,
+        "wicketPct": 0.07,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "death",
+        "economy": 8.8,
+        "wicketPct": 0.044,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.4,
+      0.46,
+      0.62,
+      0.88,
+      0.54,
+      0.8,
+      0.6,
+      0.6,
+      0.42,
+      0.46
+    ],
+    "coverage": {
+      "vsLeft": false,
+      "vsRight": true,
+      "deathOvers": false
+    }
+  },
+  {
+    "id": "rohan-kadam",
+    "name": "Rohan Kadam",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm fast-medium",
+    "age": 33,
+    "competition": "smat",
+    "matches": 68,
+    "readiness": 63,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 85,
+    "tags": [
+      "veteran seamer",
+      "powerplay economy",
+      "high consistency"
+    ],
+    "rawStats": {
+      "ballsBowled": 1476,
+      "runsConceded": 1845,
+      "wickets": 51,
+      "economy": 7.5,
+      "powerplayEconomy": 7,
+      "deathEconomy": 8.9,
+      "dotBallPct": 0.42,
+      "catches": 15,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.17,
+      "bowling": 0.68,
+      "fielding": 0.54,
+      "pressure": 0.54,
+      "consistency": 0.82
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7,
+        "wicketPct": 0.04,
+        "dotPct": 0.46
+      },
+      {
+        "phase": "middle",
+        "economy": 7.6,
+        "wicketPct": 0.036,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "death",
+        "economy": 8.9,
+        "wicketPct": 0.04,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.76,
+      0.42,
+      0.76,
+      0.68,
+      0.64,
+      0.72,
+      0.72,
+      0.54,
+      0.54,
+      0.82
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "irfan-mulla",
+    "name": "Irfan Mulla",
+    "role": "bowler",
+    "battingHand": "left",
+    "bowlingStyle": "left-arm fast",
+    "age": 25,
+    "competition": "smat",
+    "matches": 36,
+    "readiness": 79,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 235,
+    "tags": [
+      "left-arm pace angle",
+      "death-overs containment",
+      "new-ball option"
+    ],
+    "rawStats": {
+      "ballsBowled": 786,
+      "runsConceded": 943,
+      "wickets": 39,
+      "economy": 7.2,
+      "powerplayEconomy": 6.9,
+      "deathEconomy": 7.5,
+      "dotBallPct": 0.44,
+      "catches": 8,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.13,
+      "bowling": 0.83,
+      "fielding": 0.56,
+      "pressure": 0.78,
+      "consistency": 0.76
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 6.9,
+        "wicketPct": 0.046,
+        "dotPct": 0.47
+      },
+      {
+        "phase": "middle",
+        "economy": 7.4,
+        "wicketPct": 0.042,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "death",
+        "economy": 7.5,
+        "wicketPct": 0.058,
+        "dotPct": 0.43
+      }
+    ],
+    "featureVector": [
+      0.82,
+      0.8,
+      0.82,
+      0.78,
+      0.88,
+      0.68,
+      0.8,
+      0.78,
+      0.56,
+      0.76
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "keshav-iyer",
+    "name": "Keshav Iyer",
+    "role": "bowler",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm off-spin",
+    "age": 26,
+    "competition": "smat",
+    "matches": 39,
+    "readiness": 67,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 108,
+    "tags": [
+      "powerplay spin option",
+      "dot-ball builder",
+      "strong fielding"
+    ],
+    "rawStats": {
+      "ballsBowled": 846,
+      "runsConceded": 1015,
+      "wickets": 31,
+      "economy": 7.2,
+      "powerplayEconomy": 6.9,
+      "deathEconomy": 8.6,
+      "dotBallPct": 0.41,
+      "catches": 13,
+      "runOuts": 4
+    },
+    "skillGroups": {
+      "batting": 0.23,
+      "bowling": 0.72,
+      "fielding": 0.74,
+      "pressure": 0.6,
+      "consistency": 0.74
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 6.9,
+        "wicketPct": 0.038,
+        "dotPct": 0.47
+      },
+      {
+        "phase": "middle",
+        "economy": 7.1,
+        "wicketPct": 0.042,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "death",
+        "economy": 8.6,
+        "wicketPct": 0.038,
+        "dotPct": 0.29
+      }
+    ],
+    "featureVector": [
+      0.84,
+      0.48,
+      0.76,
+      0.64,
+      0.8,
+      0.6,
+      0.76,
+      0.6,
+      0.74,
+      0.74
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "aakash-shetty",
+    "name": "Aakash Shetty",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 24,
+    "competition": "smat",
+    "matches": 32,
+    "readiness": 83,
+    "expectedPriceLakh": 40,
+    "expectedValueLakh": 340,
+    "tags": [
+      "chase specialist",
+      "elite vs spin",
+      "middle-overs accelerator"
+    ],
+    "rawStats": {
+      "innings": 31,
+      "runs": 1128,
+      "ballsFaced": 762,
+      "strikeRate": 148,
+      "boundaryPct": 0.22,
+      "dotBallPct": 0.28,
+      "singlesPct": 0.39,
+      "catches": 15,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.89,
+      "bowling": 0.06,
+      "fielding": 0.74,
+      "pressure": 0.88,
+      "consistency": 0.8
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 129.4,
+        "dotPct": 0.38
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 149.2,
+        "dotPct": 0.26
+      },
+      {
+        "phase": "death",
+        "strikeRate": 166.8,
+        "dotPct": 0.21
+      }
+    ],
+    "featureVector": [
+      0.66,
+      0.88,
+      0.86,
+      0.84,
+      0.9,
+      0.8,
+      0.88,
+      0.88,
+      0.74,
+      0.8
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "vikram-solanki",
+    "name": "Vikram Solanki",
+    "role": "batter",
+    "battingHand": "left",
+    "age": 26,
+    "competition": "smat",
+    "matches": 40,
+    "readiness": 80,
+    "expectedPriceLakh": 40,
+    "expectedValueLakh": 290,
+    "tags": [
+      "death-overs finisher",
+      "six-hitting range",
+      "pressure hitter"
+    ],
+    "rawStats": {
+      "innings": 38,
+      "runs": 1216,
+      "ballsFaced": 790,
+      "strikeRate": 153.9,
+      "boundaryPct": 0.25,
+      "dotBallPct": 0.34,
+      "catches": 14,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.87,
+      "bowling": 0.05,
+      "fielding": 0.68,
+      "pressure": 0.86,
+      "consistency": 0.7
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 126,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 145.6,
+        "dotPct": 0.33
+      },
+      {
+        "phase": "death",
+        "strikeRate": 179.2,
+        "dotPct": 0.24
+      }
+    ],
+    "featureVector": [
+      0.6,
+      0.94,
+      0.7,
+      0.9,
+      0.82,
+      0.74,
+      0.7,
+      0.86,
+      0.68,
+      0.7
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "arnav-joshi",
+    "name": "Arnav Joshi",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 22,
+    "competition": "smat",
+    "matches": 27,
+    "readiness": 78,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 260,
+    "tags": [
+      "powerplay opener",
+      "strong vs pace",
+      "young prospect"
+    ],
+    "rawStats": {
+      "innings": 27,
+      "runs": 918,
+      "ballsFaced": 636,
+      "strikeRate": 144.3,
+      "boundaryPct": 0.23,
+      "dotBallPct": 0.36,
+      "catches": 10,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.85,
+      "bowling": 0.04,
+      "fielding": 0.64,
+      "pressure": 0.76,
+      "consistency": 0.72
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 151.2,
+        "dotPct": 0.35
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 138.4,
+        "dotPct": 0.37
+      },
+      {
+        "phase": "death",
+        "strikeRate": 158.6,
+        "dotPct": 0.29
+      }
+    ],
+    "featureVector": [
+      0.92,
+      0.76,
+      0.7,
+      0.86,
+      0.64,
+      0.92,
+      0.72,
+      0.76,
+      0.64,
+      0.72
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "shreyas-kulkarni",
+    "name": "Shreyas Kulkarni",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 25,
+    "competition": "smat",
+    "matches": 36,
+    "readiness": 76,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 220,
+    "tags": [
+      "middle-order anchor",
+      "elite strike rotation vs spin",
+      "low dot-ball %"
+    ],
+    "rawStats": {
+      "innings": 35,
+      "runs": 1092,
+      "ballsFaced": 798,
+      "strikeRate": 136.8,
+      "boundaryPct": 0.17,
+      "dotBallPct": 0.29,
+      "singlesPct": 0.43,
+      "catches": 12,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.82,
+      "bowling": 0.06,
+      "fielding": 0.66,
+      "pressure": 0.78,
+      "consistency": 0.82
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 121.8,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 140.2,
+        "dotPct": 0.27
+      },
+      {
+        "phase": "death",
+        "strikeRate": 152.4,
+        "dotPct": 0.24
+      }
+    ],
+    "featureVector": [
+      0.58,
+      0.78,
+      0.86,
+      0.66,
+      0.9,
+      0.72,
+      0.9,
+      0.78,
+      0.66,
+      0.82
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "deepak-chauhan",
+    "name": "Deepak Chauhan",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 29,
+    "competition": "smat",
+    "matches": 51,
+    "readiness": 74,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 170,
+    "tags": [
+      "death-overs hitter",
+      "high boundary %",
+      "pressure chaser"
+    ],
+    "rawStats": {
+      "innings": 49,
+      "runs": 1372,
+      "ballsFaced": 906,
+      "strikeRate": 151.4,
+      "boundaryPct": 0.25,
+      "dotBallPct": 0.38,
+      "catches": 16,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.8,
+      "bowling": 0.04,
+      "fielding": 0.64,
+      "pressure": 0.76,
+      "consistency": 0.66
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 127.6,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 142.8,
+        "dotPct": 0.37
+      },
+      {
+        "phase": "death",
+        "strikeRate": 176,
+        "dotPct": 0.27
+      }
+    ],
+    "featureVector": [
+      0.56,
+      0.92,
+      0.62,
+      0.9,
+      0.62,
+      0.78,
+      0.6,
+      0.76,
+      0.64,
+      0.66
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "nitesh-barman",
+    "name": "Nitesh Barman",
+    "role": "batter",
+    "battingHand": "left",
+    "age": 23,
+    "competition": "smat",
+    "matches": 25,
+    "readiness": 73,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 140,
+    "tags": [
+      "left-handed opener",
+      "powerplay intent",
+      "small sample"
+    ],
+    "rawStats": {
+      "innings": 25,
+      "runs": 786,
+      "ballsFaced": 566,
+      "strikeRate": 138.9,
+      "boundaryPct": 0.21,
+      "dotBallPct": 0.37,
+      "catches": 8,
+      "runOuts": 1
+    },
+    "skillGroups": {
+      "batting": 0.76,
+      "bowling": 0.05,
+      "fielding": 0.6,
+      "pressure": 0.66,
+      "consistency": 0.6
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 144.6,
+        "dotPct": 0.36
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 132,
+        "dotPct": 0.38
+      },
+      {
+        "phase": "death",
+        "strikeRate": 154.2,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.88,
+      0.72,
+      0.66,
+      0.8,
+      0.7,
+      0.82,
+      0.66,
+      0.66,
+      0.6,
+      0.6
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": false
+    }
+  },
+  {
+    "id": "sameer-pathak",
+    "name": "Sameer Pathak",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 30,
+    "competition": "smat",
+    "matches": 58,
+    "readiness": 68,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 122,
+    "tags": [
+      "middle-order anchor",
+      "high consistency",
+      "strong vs pace"
+    ],
+    "rawStats": {
+      "innings": 56,
+      "runs": 1624,
+      "ballsFaced": 1240,
+      "strikeRate": 131,
+      "boundaryPct": 0.18,
+      "dotBallPct": 0.34,
+      "catches": 19,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.74,
+      "bowling": 0.04,
+      "fielding": 0.62,
+      "pressure": 0.64,
+      "consistency": 0.86
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 124,
+        "dotPct": 0.38
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 130.6,
+        "dotPct": 0.34
+      },
+      {
+        "phase": "death",
+        "strikeRate": 149.8,
+        "dotPct": 0.28
+      }
+    ],
+    "featureVector": [
+      0.62,
+      0.68,
+      0.72,
+      0.66,
+      0.6,
+      0.88,
+      0.76,
+      0.64,
+      0.62,
+      0.86
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "bhavesh-lodha",
+    "name": "Bhavesh Lodha",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 27,
+    "competition": "smat",
+    "matches": 42,
+    "readiness": 68,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 112,
+    "tags": [
+      "middle-order spin hitter",
+      "strike rotation",
+      "reliable fielder"
+    ],
+    "rawStats": {
+      "innings": 40,
+      "runs": 1096,
+      "ballsFaced": 828,
+      "strikeRate": 132.4,
+      "boundaryPct": 0.17,
+      "dotBallPct": 0.31,
+      "singlesPct": 0.4,
+      "catches": 14,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.72,
+      "bowling": 0.05,
+      "fielding": 0.66,
+      "pressure": 0.64,
+      "consistency": 0.76
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 118.6,
+        "dotPct": 0.39
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 136.4,
+        "dotPct": 0.29
+      },
+      {
+        "phase": "death",
+        "strikeRate": 146.2,
+        "dotPct": 0.26
+      }
+    ],
+    "featureVector": [
+      0.54,
+      0.66,
+      0.82,
+      0.62,
+      0.86,
+      0.64,
+      0.86,
+      0.64,
+      0.66,
+      0.76
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "ritesh-sarangi",
+    "name": "Ritesh Sarangi",
+    "role": "batter",
+    "battingHand": "left",
+    "age": 24,
+    "competition": "smat",
+    "matches": 34,
+    "readiness": 76,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 195,
+    "tags": [
+      "chase specialist",
+      "death-overs finisher",
+      "six-hitting range"
+    ],
+    "rawStats": {
+      "innings": 33,
+      "runs": 1002,
+      "ballsFaced": 682,
+      "strikeRate": 146.9,
+      "boundaryPct": 0.23,
+      "dotBallPct": 0.33,
+      "catches": 11,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.8,
+      "bowling": 0.06,
+      "fielding": 0.62,
+      "pressure": 0.82,
+      "consistency": 0.68
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 125.4,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 141,
+        "dotPct": 0.32
+      },
+      {
+        "phase": "death",
+        "strikeRate": 172.6,
+        "dotPct": 0.25
+      }
+    ],
+    "featureVector": [
+      0.58,
+      0.88,
+      0.7,
+      0.84,
+      0.8,
+      0.7,
+      0.7,
+      0.82,
+      0.62,
+      0.68
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "pranav-hegde",
+    "name": "Pranav Hegde",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 21,
+    "competition": "smat",
+    "matches": 19,
+    "readiness": 67,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 96,
+    "tags": [
+      "young top-order prospect",
+      "powerplay intent",
+      "small sample"
+    ],
+    "rawStats": {
+      "innings": 19,
+      "runs": 542,
+      "ballsFaced": 402,
+      "strikeRate": 134.8,
+      "boundaryPct": 0.2,
+      "dotBallPct": 0.38,
+      "catches": 6,
+      "runOuts": 1
+    },
+    "skillGroups": {
+      "batting": 0.68,
+      "bowling": 0.03,
+      "fielding": 0.58,
+      "pressure": 0.6,
+      "consistency": 0.5
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 140.2,
+        "dotPct": 0.37
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 128.6,
+        "dotPct": 0.39
+      },
+      {
+        "phase": "death",
+        "strikeRate": 148,
+        "dotPct": 0.32
+      }
+    ],
+    "featureVector": [
+      0.82,
+      0.66,
+      0.62,
+      0.76,
+      0.6,
+      0.8,
+      0.62,
+      0.6,
+      0.58,
+      0.5
+    ],
+    "coverage": {
+      "vsLeft": false,
+      "vsRight": true,
+      "deathOvers": false
+    }
+  },
+  {
+    "id": "lokesh-dhawan",
+    "name": "Lokesh Dhawan",
+    "role": "batter",
+    "battingHand": "left",
+    "age": 28,
+    "competition": "smat",
+    "matches": 46,
+    "readiness": 68,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 102,
+    "tags": [
+      "powerplay anchor",
+      "strike rotation",
+      "experienced"
+    ],
+    "rawStats": {
+      "innings": 45,
+      "runs": 1288,
+      "ballsFaced": 1004,
+      "strikeRate": 128.3,
+      "boundaryPct": 0.16,
+      "dotBallPct": 0.32,
+      "singlesPct": 0.42,
+      "catches": 13,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.7,
+      "bowling": 0.04,
+      "fielding": 0.6,
+      "pressure": 0.58,
+      "consistency": 0.8
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 132.4,
+        "dotPct": 0.35
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 126,
+        "dotPct": 0.31
+      },
+      {
+        "phase": "death",
+        "strikeRate": 140.6,
+        "dotPct": 0.29
+      }
+    ],
+    "featureVector": [
+      0.76,
+      0.6,
+      0.8,
+      0.6,
+      0.82,
+      0.64,
+      0.84,
+      0.58,
+      0.6,
+      0.8
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "tejas-borkar",
+    "name": "Tejas Borkar",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 26,
+    "competition": "smat",
+    "matches": 38,
+    "readiness": 71,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 132,
+    "tags": [
+      "middle-order accelerator",
+      "strong vs pace",
+      "reliable fielder"
+    ],
+    "rawStats": {
+      "innings": 37,
+      "runs": 1044,
+      "ballsFaced": 748,
+      "strikeRate": 139.6,
+      "boundaryPct": 0.2,
+      "dotBallPct": 0.35,
+      "catches": 15,
+      "runOuts": 4
+    },
+    "skillGroups": {
+      "batting": 0.75,
+      "bowling": 0.05,
+      "fielding": 0.72,
+      "pressure": 0.68,
+      "consistency": 0.7
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 126.8,
+        "dotPct": 0.38
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 138.2,
+        "dotPct": 0.35
+      },
+      {
+        "phase": "death",
+        "strikeRate": 160.4,
+        "dotPct": 0.28
+      }
+    ],
+    "featureVector": [
+      0.6,
+      0.76,
+      0.7,
+      0.76,
+      0.64,
+      0.86,
+      0.7,
+      0.68,
+      0.72,
+      0.7
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "girish-hooda",
+    "name": "Girish Hooda",
+    "role": "batter",
+    "battingHand": "right",
+    "age": 31,
+    "competition": "smat",
+    "matches": 63,
+    "readiness": 63,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 90,
+    "tags": [
+      "veteran middle order",
+      "high consistency",
+      "strike rotation"
+    ],
+    "rawStats": {
+      "innings": 61,
+      "runs": 1706,
+      "ballsFaced": 1348,
+      "strikeRate": 126.6,
+      "boundaryPct": 0.15,
+      "dotBallPct": 0.33,
+      "singlesPct": 0.41,
+      "catches": 18,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.68,
+      "bowling": 0.04,
+      "fielding": 0.6,
+      "pressure": 0.56,
+      "consistency": 0.84
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 118.4,
+        "dotPct": 0.37
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 124.8,
+        "dotPct": 0.32
+      },
+      {
+        "phase": "death",
+        "strikeRate": 142,
+        "dotPct": 0.29
+      }
+    ],
+    "featureVector": [
+      0.54,
+      0.6,
+      0.78,
+      0.56,
+      0.76,
+      0.7,
+      0.82,
+      0.56,
+      0.6,
+      0.84
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "omkar-sawant",
+    "name": "Omkar Sawant",
+    "role": "batter",
+    "battingHand": "left",
+    "age": 25,
+    "competition": "smat",
+    "matches": 35,
+    "readiness": 74,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 155,
+    "tags": [
+      "middle-order spin hitter",
+      "chase specialist",
+      "low dot-ball %"
+    ],
+    "rawStats": {
+      "innings": 34,
+      "runs": 1008,
+      "ballsFaced": 726,
+      "strikeRate": 138.8,
+      "boundaryPct": 0.18,
+      "dotBallPct": 0.3,
+      "singlesPct": 0.42,
+      "catches": 12,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.78,
+      "bowling": 0.05,
+      "fielding": 0.64,
+      "pressure": 0.78,
+      "consistency": 0.72
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "strikeRate": 122.6,
+        "dotPct": 0.39
+      },
+      {
+        "phase": "middle",
+        "strikeRate": 142.4,
+        "dotPct": 0.28
+      },
+      {
+        "phase": "death",
+        "strikeRate": 156,
+        "dotPct": 0.25
+      }
+    ],
+    "featureVector": [
+      0.56,
+      0.78,
+      0.84,
+      0.66,
+      0.88,
+      0.68,
+      0.88,
+      0.78,
+      0.64,
+      0.72
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "kabir-anand",
+    "name": "Kabir Anand",
+    "role": "allrounder",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm fast-medium",
+    "age": 24,
+    "competition": "smat",
+    "matches": 33,
+    "readiness": 78,
+    "expectedPriceLakh": 40,
+    "expectedValueLakh": 275,
+    "tags": [
+      "two-way death-overs value",
+      "finisher potential",
+      "strong fielding"
+    ],
+    "rawStats": {
+      "runs": 688,
+      "strikeRate": 149.6,
+      "ballsBowled": 552,
+      "economy": 7.8,
+      "wickets": 27,
+      "dotBallPct": 0.36,
+      "catches": 17,
+      "runOuts": 4
+    },
+    "skillGroups": {
+      "batting": 0.8,
+      "bowling": 0.74,
+      "fielding": 0.82,
+      "pressure": 0.84,
+      "consistency": 0.74
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.6,
+        "strikeRate": 124,
+        "dotPct": 0.4
+      },
+      {
+        "phase": "middle",
+        "economy": 7.7,
+        "strikeRate": 140.2,
+        "dotPct": 0.36
+      },
+      {
+        "phase": "death",
+        "economy": 8.1,
+        "strikeRate": 174.6,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.66,
+      0.86,
+      0.72,
+      0.82,
+      0.74,
+      0.78,
+      0.74,
+      0.84,
+      0.82,
+      0.74
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "siddharth-naik",
+    "name": "Siddharth Naik",
+    "role": "allrounder",
+    "battingHand": "left",
+    "bowlingStyle": "left-arm orthodox",
+    "age": 26,
+    "competition": "smat",
+    "matches": 41,
+    "readiness": 76,
+    "expectedPriceLakh": 30,
+    "expectedValueLakh": 245,
+    "tags": [
+      "spin-bowling all-rounder",
+      "elite vs spin",
+      "strong fielding"
+    ],
+    "rawStats": {
+      "runs": 742,
+      "strikeRate": 134.2,
+      "ballsBowled": 738,
+      "economy": 7.2,
+      "wickets": 32,
+      "dotBallPct": 0.41,
+      "catches": 19,
+      "runOuts": 5
+    },
+    "skillGroups": {
+      "batting": 0.72,
+      "bowling": 0.78,
+      "fielding": 0.86,
+      "pressure": 0.76,
+      "consistency": 0.8
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7,
+        "strikeRate": 116.4,
+        "dotPct": 0.44
+      },
+      {
+        "phase": "middle",
+        "economy": 7.1,
+        "strikeRate": 136.8,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "death",
+        "economy": 8,
+        "strikeRate": 158.2,
+        "dotPct": 0.32
+      }
+    ],
+    "featureVector": [
+      0.72,
+      0.7,
+      0.8,
+      0.7,
+      0.9,
+      0.66,
+      0.86,
+      0.76,
+      0.86,
+      0.8
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "jatin-marwah",
+    "name": "Jatin Marwah",
+    "role": "allrounder",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm off-spin",
+    "age": 28,
+    "competition": "smat",
+    "matches": 49,
+    "readiness": 70,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 165,
+    "tags": [
+      "spin control",
+      "middle-overs two-way value",
+      "experienced"
+    ],
+    "rawStats": {
+      "runs": 806,
+      "strikeRate": 128.4,
+      "ballsBowled": 864,
+      "economy": 7.3,
+      "wickets": 33,
+      "dotBallPct": 0.4,
+      "catches": 18,
+      "runOuts": 4
+    },
+    "skillGroups": {
+      "batting": 0.66,
+      "bowling": 0.74,
+      "fielding": 0.78,
+      "pressure": 0.66,
+      "consistency": 0.82
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.1,
+        "strikeRate": 114,
+        "dotPct": 0.44
+      },
+      {
+        "phase": "middle",
+        "economy": 7,
+        "strikeRate": 130.6,
+        "dotPct": 0.42
+      },
+      {
+        "phase": "death",
+        "economy": 8.3,
+        "strikeRate": 150.4,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.7,
+      0.62,
+      0.78,
+      0.66,
+      0.84,
+      0.62,
+      0.8,
+      0.66,
+      0.78,
+      0.82
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  },
+  {
+    "id": "rehan-baig",
+    "name": "Rehan Baig",
+    "role": "allrounder",
+    "battingHand": "left",
+    "bowlingStyle": "left-arm medium-fast",
+    "age": 23,
+    "competition": "smat",
+    "matches": 28,
+    "readiness": 73,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 135,
+    "tags": [
+      "young two-way prospect",
+      "new-ball option",
+      "finisher potential"
+    ],
+    "rawStats": {
+      "runs": 542,
+      "strikeRate": 141.2,
+      "ballsBowled": 420,
+      "economy": 7.9,
+      "wickets": 19,
+      "dotBallPct": 0.37,
+      "catches": 11,
+      "runOuts": 2
+    },
+    "skillGroups": {
+      "batting": 0.7,
+      "bowling": 0.66,
+      "fielding": 0.7,
+      "pressure": 0.74,
+      "consistency": 0.62
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 7.4,
+        "strikeRate": 120.6,
+        "dotPct": 0.43
+      },
+      {
+        "phase": "middle",
+        "economy": 8,
+        "strikeRate": 136,
+        "dotPct": 0.36
+      },
+      {
+        "phase": "death",
+        "economy": 8.4,
+        "strikeRate": 164.2,
+        "dotPct": 0.3
+      }
+    ],
+    "featureVector": [
+      0.74,
+      0.76,
+      0.7,
+      0.72,
+      0.8,
+      0.62,
+      0.7,
+      0.74,
+      0.7,
+      0.62
+    ],
+    "coverage": {
+      "vsLeft": true,
+      "vsRight": true,
+      "deathOvers": false
+    }
+  },
+  {
+    "id": "hemant-rawat",
+    "name": "Hemant Rawat",
+    "role": "allrounder",
+    "battingHand": "right",
+    "bowlingStyle": "right-arm leg-spin",
+    "age": 27,
+    "competition": "smat",
+    "matches": 44,
+    "readiness": 69,
+    "expectedPriceLakh": 20,
+    "expectedValueLakh": 120,
+    "tags": [
+      "wrist-spin all-rounder",
+      "middle-overs wickets",
+      "lower-order hitting"
+    ],
+    "rawStats": {
+      "runs": 604,
+      "strikeRate": 133.6,
+      "ballsBowled": 792,
+      "economy": 7.7,
+      "wickets": 37,
+      "dotBallPct": 0.38,
+      "catches": 14,
+      "runOuts": 3
+    },
+    "skillGroups": {
+      "batting": 0.62,
+      "bowling": 0.74,
+      "fielding": 0.7,
+      "pressure": 0.66,
+      "consistency": 0.7
+    },
+    "phaseStats": [
+      {
+        "phase": "powerplay",
+        "economy": 8.1,
+        "strikeRate": 118.2,
+        "dotPct": 0.38
+      },
+      {
+        "phase": "middle",
+        "economy": 7.2,
+        "strikeRate": 134,
+        "dotPct": 0.41
+      },
+      {
+        "phase": "death",
+        "economy": 8.4,
+        "strikeRate": 156.8,
+        "dotPct": 0.31
+      }
+    ],
+    "featureVector": [
+      0.52,
+      0.66,
+      0.72,
+      0.86,
+      0.7,
+      0.82,
+      0.7,
+      0.66,
+      0.7,
+      0.7
+    ],
+    "coverage": {
+      "vsLeft": false,
+      "vsRight": true,
+      "deathOvers": true
+    }
+  }
+]
