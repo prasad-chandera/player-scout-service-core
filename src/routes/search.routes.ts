@@ -1,9 +1,9 @@
-import { Router } from "express";
-import * as searchController from "../controllers/search.controller.js";
+import { Router } from 'express'
+import * as searchController from '../controllers/search.controller.js'
 
-const router = Router();
+const router = Router()
 
 // 4. "Find the next Bumrah".
-router.post("/search/similar", searchController.searchSimilar);
+router.post('/search/similar', searchController.searchSimilar)
 
-export default router;
+export default router

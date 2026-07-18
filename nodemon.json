@@ -1,0 +1,12 @@
+{
+	"watch": ["src/**/*.ts"],
+	"ext": "ts,js,json",
+	"ignore": [
+		"src/**/*.spec.ts",
+		"src/**/*.test.ts",
+		"src/**/*.d.ts",
+		"node_modules",
+		"dist"
+	],
+	"exec": "tsc && node --inspect -r dotenv/config dist/index.js dotenv_config_path=.env.development"
+}

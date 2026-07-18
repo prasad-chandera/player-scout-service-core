@@ -1,27 +1,30 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2023"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Node 20",
+	"_version": "20.1.0",
 
-    // Sources live in src/, compiled output in dist/. rootDir MUST stay "src" —
-    // store.ts derives the project root from its own location as "one level up",
-    // which holds for both src/store.ts and dist/store.js. Widening rootDir would
-    // nest the output an extra level and break the data/ and cache/ paths.
-    "rootDir": "src",
-    "outDir": "dist",
+	"compilerOptions": {
+		"lib": ["es2023"],
+		"module": "nodenext",
+		"target": "es2022",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"moduleResolution": "node16",
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"forceConsistentCasingInFileNames": true,
+		"noUnusedParameters": true,
+		"noUnusedLocals": true,
+		"resolveJsonModule": true,
+		"declaration": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"isolatedModules": true,
+		"sourceMap": true,
+		"inlineSourceMap": false
+	},
 
-    "strict": true,
-    "noUncheckedIndexedAccess": false,
-    "verbatimModuleSyntax": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "declaration": false,
-    "sourceMap": true
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist", "**/*.test.ts", "src/_archived"]
 }

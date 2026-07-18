@@ -9,29 +9,33 @@
 //
 // Run this after touching any featureVector or any weight.
 
-import fs from "node:fs";
-import path from "node:path";
+import fs from 'node:fs'
+import path from 'node:path'
 // DATA_DIR comes from the store rather than being recomputed here: this file compiles to
 // dist/scripts/, so deriving a root from its own location would resolve to dist/ and
 // miss data/ entirely. store.ts is the single source of truth for both layouts.
-import { DATA_DIR, players } from "../store.js";
-import { readinessFor } from "../services/readiness.service.js";
+import { DATA_DIR, players } from '../store.js'
+import { readinessFor } from '../services/readiness.service.js'
 
-const FILE = path.join(DATA_DIR, "players.json");
+const FILE = path.join(DATA_DIR, 'players.json')
 
-let changed = 0;
+let changed = 0
 for (const p of players) {
-  const { score } = readinessFor(p);
-  if (p.readiness !== score) {
-    console.log(`  ${p.id.padEnd(20)} ${String(p.readiness).padStart(3)} → ${score}`);
-    p.readiness = score;
-    changed++;
-  }
+	const { score } = readinessFor(p)
+	if (p.readiness !== score) {
+		console.log(
+			`  ${p.id.padEnd(20)} ${String(p.readiness).padStart(3)} → ${score}`
+		)
+		p.readiness = score
+		changed++
+	}
 }
 
 if (changed === 0) {
-  console.log("All readiness scores already match the model. Nothing to write.");
+	console.log('All readiness scores already match the model. Nothing to write.')
 } else {
-  fs.writeFileSync(FILE, `${JSON.stringify(players, null, 2)}\n`);
-  console.log(`\nRescored ${changed} of ${players.length} players → data/players.json`);
+	fs.writeFileSync(FILE, `${JSON.stringify(players, null, 2)}\n`)
+	console.log(
+		`\nRescored ${changed} of ${players.length} players → data/players.json`
+	)
 }
