@@ -4,13 +4,13 @@
 //
 // These weights ARE the model. Changing them changes every score on screen.
 
-import { FEATURES } from '../store.js'
+import { FEATURES } from '../store'
 import type {
 	Player,
 	ReadinessBreakdownRow,
 	ReadinessResponse,
 	Role
-} from '../types/index.js'
+} from '../types/index'
 
 export const MODEL_VERSION = 'weighted-v1'
 

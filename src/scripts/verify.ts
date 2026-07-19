@@ -17,7 +17,7 @@ import type {
 	TeamFitResponse,
 	TeamProfile,
 	UndervaluedResponse
-} from '../types/index.js'
+} from '../types/index'
 
 const BASE = process.env.VERIFY_BASE_URL ?? 'http://localhost:4000'
 

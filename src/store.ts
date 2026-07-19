@@ -11,7 +11,7 @@ import type {
 	FeatureMeta,
 	Player,
 	TeamProfile
-} from './types/index.js'
+} from './types/index'
 
 // This file must stay exactly one level below both src/ and dist/, because the project
 // root is derived as "one level up from wherever this module ended up":

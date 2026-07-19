@@ -1,0 +1,321 @@
+openapi: 3.0.3
+info:
+  title: Player Scout Service Core API
+  version: 3.8.0-dev.58
+  description: >
+    Public API for the Player Scout service. This document currently covers the
+    Cricsheet-backed cricket players catalogue; other endpoints will be added here as
+    they adopt the same documentation process.
+servers:
+  - url: /api
+    description: API root (mounted under /api by src/server.ts)
+tags:
+  - name: Players
+    description: >
+      Indian international and domestic cricket players, sourced from Cricsheet
+      (see src/services/cricsheet.service.ts).
+
+paths:
+  /players:
+    get:
+      tags: [Players]
+      summary: List Indian international and domestic cricket players
+      description: >
+        Returns a paginated, filterable list of Indian cricket players derived from
+        Cricsheet match data: India's international matches (Test/ODI/T20I), the
+        Indian Premier League, and the Syed Mushtaq Ali Trophy (India's domestic T20
+        competition, and the closest Cricsheet equivalent to Ranji Trophy, which
+        Cricsheet does not publish). No authentication required.
+      operationId: getPlayersList
+      security: []
+      parameters:
+        - name: name
+          in: query
+          required: false
+          description: Case-insensitive substring match on player name.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: team
+          in: query
+          required: false
+          description: >
+            Case-insensitive substring match against any team the player has
+            represented — "India", an IPL franchise (e.g. "Chennai Super Kings"), or
+            a Syed Mushtaq Ali Trophy state/zone side (e.g. "Karnataka").
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: format
+          in: query
+          required: false
+          description: Restrict to players who have appeared in this format.
+          schema:
+            $ref: '#/components/schemas/CricketFormat'
+        - name: page
+          in: query
+          required: false
+          description: 1-indexed page number.
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          description: Page size.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: A page of matching players.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayersListResponse'
+        '400':
+          description: Invalid query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Cricsheet was unreachable or returned unparseable data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CricketFormat:
+      type: string
+      enum: [TEST, ODI, T20, T20I]
+      description: >
+        T20 is a domestic T20 match (IPL, Syed Mushtaq Ali Trophy); T20I is an
+        international T20 played for India.
+
+    CricketPlayer:
+      type: object
+      required:
+        [id, name, role, teams, formats, isInternational, isDomestic, stats]
+      properties:
+        id:
+          type: string
+          description: >
+            Cricsheet registry identifier (8-character hex), stable across every
+            match in the dataset. Falls back to the raw player name for the rare
+            match predating registry coverage.
+        name:
+          type: string
+        role:
+          type: string
+          description: >
+            Simple role classification derived from aggregate career figures across
+            every format (Cricsheet has no role field to read directly): "Wicketkeeper
+            Batter" if the player has ever recorded a stumping, "All-rounder" if both
+            batting and bowling are substantial, otherwise "Bowler" or "Batter". See
+            classifyRole in src/services/cricsheet.service.ts.
+        teams:
+          type: array
+          items:
+            type: string
+          description: >
+            Every team the player has represented — "India", one or more IPL
+            franchises, and/or one or more Syed Mushtaq Ali Trophy state/zone sides.
+        formats:
+          type: array
+          items:
+            $ref: '#/components/schemas/CricketFormat'
+        isInternational:
+          type: boolean
+          description: Has represented India internationally (Test/ODI/T20I).
+        isDomestic:
+          type: boolean
+          description: Has played Indian domestic cricket (IPL and/or Syed Mushtaq Ali Trophy).
+        stats:
+          type: object
+          description: >
+            Basic batting/bowling/fielding record, keyed by format. Always has all
+            four CricketFormat keys, even for formats the player has never played
+            (an all-zero, all-null entry) — `formats` above is the list of formats
+            they've actually played.
+          additionalProperties: false
+          properties:
+            TEST:
+              $ref: '#/components/schemas/CricketPlayerFormatStats'
+            ODI:
+              $ref: '#/components/schemas/CricketPlayerFormatStats'
+            T20:
+              $ref: '#/components/schemas/CricketPlayerFormatStats'
+            T20I:
+              $ref: '#/components/schemas/CricketPlayerFormatStats'
+          required: [TEST, ODI, T20, T20I]
+
+    BattingStats:
+      type: object
+      required:
+        [runs, ballsFaced, notOuts, average, strikeRate, highestScore, hundreds, fifties]
+      properties:
+        runs:
+          type: integer
+          description: Runs scored off the bat (excludes byes/leg-byes).
+        ballsFaced:
+          type: integer
+          description: Legal deliveries faced, i.e. excluding wides.
+        notOuts:
+          type: integer
+        average:
+          type: number
+          nullable: true
+          description: '`runs / (innings - notOuts)`, or null if never dismissed.'
+        strikeRate:
+          type: number
+          nullable: true
+          description: '`(runs / ballsFaced) * 100`, or null if no balls faced.'
+        highestScore:
+          type: integer
+        hundreds:
+          type: integer
+        fifties:
+          type: integer
+
+    BowlingStats:
+      type: object
+      required:
+        [wickets, runsConceded, ballsBowled, average, economy, bestBowlingWickets, bestBowlingRuns]
+      properties:
+        wickets:
+          type: integer
+        runsConceded:
+          type: integer
+          description: Excludes byes/leg-byes, which aren't charged to the bowler.
+        ballsBowled:
+          type: integer
+          description: Legal deliveries bowled, i.e. excluding wides and no-balls.
+        average:
+          type: number
+          nullable: true
+          description: '`runsConceded / wickets`, or null if no wickets taken.'
+        economy:
+          type: number
+          nullable: true
+          description: Runs conceded per 6 legal deliveries, or null if never bowled.
+        bestBowlingWickets:
+          type: integer
+          description: Most wickets taken in a single innings (ties broken by fewest runs).
+        bestBowlingRuns:
+          type: integer
+          description: Runs conceded in that best-bowling innings.
+
+    WicketKeepingStats:
+      type: object
+      required: [stumped, catches]
+      properties:
+        stumped:
+          type: integer
+          description: >
+            The only wicketkeeping action Cricsheet's data unambiguously credits to
+            the keeper (a stumping always has exactly one fielder: the keeper).
+        catches:
+          type: integer
+          description: >
+            Only present here (rather than under `fielding`) once the player has
+            recorded a stumping in this format — see `CricketPlayerFormatStats`.
+
+    FieldingStats:
+      type: object
+      required: [catches, runouts]
+      properties:
+        catches:
+          type: integer
+          description: Excludes "caught and bowled", which is credited to bowling.
+        runouts:
+          type: integer
+          description: Every fielder credited on a run-out counts.
+
+    CricketPlayerFormatStats:
+      type: object
+      required: [matches, innings, batting, bowling, wicketKeeping, fielding]
+      properties:
+        matches:
+          type: integer
+          description: Matches played in this format (may exceed batting/bowling innings).
+        innings:
+          type: integer
+          description: '`max(batting innings, bowling innings)` for this format.'
+        batting:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/BattingStats'
+          description: Null if the player has never batted in this format.
+        bowling:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/BowlingStats'
+          description: Null if the player has never bowled in this format.
+        wicketKeeping:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/WicketKeepingStats'
+          description: >
+            Populated only if the player has recorded a stumping in this format.
+        fielding:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/FieldingStats'
+          description: >
+            Null when `wicketKeeping` is populated, or the player has recorded
+            neither a catch nor a run-out in this format.
+
+    PlayersListData:
+      type: object
+      required: [players, page, limit, total, totalPages]
+      properties:
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/CricketPlayer'
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+
+    PlayersListResponse:
+      type: object
+      required: [status, error, message, data]
+      properties:
+        status:
+          type: string
+          enum: [SUCCESS, FAILED]
+        error:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/PlayersListData'
+
+    ErrorResponse:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          description: 'Machine-readable error code, e.g. BAD_REQUEST.'
+        message:
+          type: string
+        validationResult:
+          type: object
+          nullable: true
+          description: Present when the error was a query-validation failure (a Zod error).

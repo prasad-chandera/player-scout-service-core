@@ -31,13 +31,13 @@
 // which players you see, never their scores.
 // ---------------------------------------------------------------------------------
 
-import { FEATURES, players as allPlayers } from '../store.js'
+import { FEATURES, players as allPlayers } from '../store'
 import type {
 	FeatureContribution,
 	Player,
 	PlayerSummary,
 	SimilarityResult
-} from '../types/index.js'
+} from '../types/index'
 
 /** Per-feature pool mean, fixed at boot. */
 const POOL_MEAN: number[] = FEATURES.map(

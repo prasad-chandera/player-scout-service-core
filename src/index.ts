@@ -3,10 +3,11 @@ import { Server } from 'http'
 
 import app from './server'
 import CONFIG from './configs/config'
+import { warmCricketPlayersCache } from './services/cricsheet'
 
 const PORT = CONFIG.appConfig.APP_PORT
 
-let server: Server | null = null
+const server: Server | null = null
 
 /**
  * Graceful shutdown handler
@@ -76,6 +77,11 @@ process.on(
 		process.exit(1)
 	}
 )
+
+// Fire-and-forget: starts the Cricsheet archive download/parse/score build during
+// boot so it's warm by the time the first GET /api/players request arrives, instead
+// of that request paying for a cold cache.
+warmCricketPlayersCache()
 
 app.listen(PORT, () => {
 	// eslint-disable-next-line no-console
