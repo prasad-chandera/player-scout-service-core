@@ -1208,7 +1208,7 @@ let inflightBuild: Promise<CricketPlayer[]> | null = null
  * callers during a cold start or refresh share a single in-flight rebuild rather than
  * each triggering their own archive downloads.
  */
-async function getPlayerIndex(): Promise<CricketPlayer[]> {
+export async function getPlayerIndex(): Promise<CricketPlayer[]> {
 	const isFresh =
 		cache !== null &&
 		Date.now() - cache.loadedAt < config.cricsheetConfig.CRICSHEET_CACHE_TTL_MS

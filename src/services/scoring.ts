@@ -345,14 +345,18 @@ export function computeImpactScore(input: PlayerScoringInput): number {
  * injury history). Both are proxied from the same timeline Cricsheet does give us:
  * - Age potential: a player closer to their Cricsheet debut is treated as having more
  *   room to grow than a player who has been active for a decade — a proxy for youth,
- *   not a substitute for it.
+ *   not a substitute for it. This floors at 40 rather than decaying to 0: a proven
+ *   decade-plus veteran (the exact profile real auctions pay the most for) isn't worth
+ *   *zero* on age-related value just for having a long track record — a hard zero here
+ *   was capping every established star's auctionScore well below the top price band
+ *   regardless of how good their current form actually was.
  * - Fitness/availability: a player who appeared recently (relative to the newest match
  *   in the whole ingested dataset — Cricsheet archives are a periodic bulk export, not
  *   a live feed, so "recently" is relative to the data, not to today) is scored as more
  *   available than one whose last appearance is old.
  */
 function agePotentialScore(yearsSinceDebut: number): number {
-	return clamp(100 - yearsSinceDebut * 8)
+	return clamp(100 - yearsSinceDebut * 4, 40)
 }
 
 function fitnessAvailabilityScore(daysSinceLastAppearance: number): number {

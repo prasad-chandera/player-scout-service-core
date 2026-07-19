@@ -1,6 +1,7 @@
-// GET /api/players — the Cricsheet-backed players list endpoint. See
-// ../../services/cricsheet.ts for how the catalogue (including impactScore and
-// estimatedPriceRange) is built and its known coverage gaps.
+// GET /api/players and GET /api/players/search — the Cricsheet-backed players list and
+// its natural-language search variant. See ../../services/cricsheet.ts for how the
+// catalogue (including impactScore and estimatedPriceRange) is built, and
+// ../../services/playerSearch.ts for how search queries are interpreted.
 //
 // The player detail endpoints (profile, similarity, readiness) that used to live here
 // read the demo readiness/similarity dataset (../../store.ts) and predate the
@@ -13,7 +14,9 @@ import { z } from 'zod/v4'
 import { ApiResponse } from '../../types/common'
 import { CustomError } from '../../middleware/errorHandler'
 import { listCricketPlayers } from '../../services/cricsheet'
+import { searchPlayers } from '../../services/playerSearch'
 import type { CricketPlayersListData } from '../../types/players'
+import type { PlayerSearchResult } from '../../types/playerSearch'
 
 const DOMESTIC_COMPETITIONS = ['ipl', 'smat'] as const
 const MAX_PAGE_SIZE = 100
@@ -72,6 +75,56 @@ export const getPlayersList = async (req: Request, res: Response) => {
 				response.message = error.toString().replace('Error: ', '')
 			} else {
 				response.message = 'Failed to fetch players list.'
+			}
+		}
+		const customError = new CustomError(
+			response.error || 'INTERNAL_SERVER_ERROR',
+			response.message,
+			error instanceof CustomError ? error.validationResult : null
+		)
+		customError.throwError(req, res)
+	}
+}
+
+const playersSearchQuerySchema = z.object({
+	query: z.string().trim().min(2).max(300)
+})
+
+/**
+ * GET /api/players/search?q=... — natural-language player search, e.g. "best
+ * impactful batter in powerplay" or "find me the best all-rounder within 10 crore
+ * budget". See `../../services/playerSearch.ts` for how the query is interpreted
+ * (Gemini's free tier turns it into structured filters) and applied against the same
+ * catalogue `getPlayersList` serves.
+ *
+ * Query parameters:
+ * - `q` (required) — the free-text search query, 2-300 characters.
+ */
+export const getPlayersSearch = async (req: Request, res: Response) => {
+	const response: ApiResponse & { data: PlayerSearchResult | null } = {
+		status: 'FAILED',
+		error: null,
+		message: null,
+		data: null
+	}
+
+	try {
+		const parsedQuery = playersSearchQuerySchema.safeParse(req.query)
+		if (!parsedQuery.success) {
+			response.error = 'BAD_REQUEST'
+			response.message = 'Search query is required.'
+			throw new CustomError(response.error, response.message, parsedQuery.error)
+		}
+
+		response.data = await searchPlayers(parsedQuery.data.query)
+		response.status = 'SUCCESS'
+		res.json(response)
+	} catch (error) {
+		if (!response.message) {
+			if (error instanceof Error) {
+				response.message = error.toString().replace('Error: ', '')
+			} else {
+				response.message = 'Failed to search players.'
 			}
 		}
 		const customError = new CustomError(
