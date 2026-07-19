@@ -18,18 +18,10 @@ import {
 	CACHE_DIR,
 	FALLBACK_EXPLANATIONS,
 	players as allPlayers
-} from '../store.js'
-import {
-	MODEL_VERSION,
-	readinessFor,
-	topContributors
-} from './readiness.service.js'
-import { similarTo } from './similarity.service.js'
-import type {
-	ComparisonExplanation,
-	Explanation,
-	Player
-} from '../types/index.js'
+} from '../store'
+import { MODEL_VERSION, readinessFor, topContributors } from './readiness'
+import { similarTo } from './similarity'
+import type { ComparisonExplanation, Explanation, Player } from '../types/index'
 
 export const MODEL: string = process.env.CLAUDE_MODEL || 'claude-opus-4-8'
 export const hasKey = (): boolean => Boolean(process.env.ANTHROPIC_API_KEY)

@@ -41,10 +41,25 @@ const redisConfig = {
 	REDIS_PASSWORD: process.env.REDIS_PASSWORD || ''
 }
 
+const cricsheetConfig = {
+	CRICSHEET_BASE_URL: process.env.CRICSHEET_BASE_URL || 'https://cricsheet.org',
+	// How long the in-memory player index is trusted before the archives are
+	// re-downloaded and re-parsed. Cricsheet publishes updates at most daily.
+	CRICSHEET_CACHE_TTL_MS: parseInt(
+		process.env.CRICSHEET_CACHE_TTL_MS || `${24 * 60 * 60 * 1000}`,
+		10
+	),
+	CRICSHEET_REQUEST_TIMEOUT_MS: parseInt(
+		process.env.CRICSHEET_REQUEST_TIMEOUT_MS || '30000',
+		10
+	)
+}
+
 export default {
 	appConfig,
 	awsConfig,
 	urlsConfig,
 	aiConfig,
-	redisConfig
+	redisConfig,
+	cricsheetConfig
 }

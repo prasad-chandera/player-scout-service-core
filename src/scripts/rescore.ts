@@ -14,8 +14,8 @@ import path from 'node:path'
 // DATA_DIR comes from the store rather than being recomputed here: this file compiles to
 // dist/scripts/, so deriving a root from its own location would resolve to dist/ and
 // miss data/ entirely. store.ts is the single source of truth for both layouts.
-import { DATA_DIR, players } from '../store.js'
-import { readinessFor } from '../services/readiness.service.js'
+import { DATA_DIR, players } from '../store'
+import { readinessFor } from '../services/readiness'
 
 const FILE = path.join(DATA_DIR, 'players.json')
 

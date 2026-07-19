@@ -1,14 +1,14 @@
 // Team Fit — "best player FOR RCB" rather than "best player" (docs/02 §6).
 // This is a new query over the vectors + readiness + price we already have, not a new system.
 
-import { toSummary } from './similarity.service.js'
+import { toSummary } from './similarity'
 import type {
 	Player,
 	Role,
 	TeamFitRecommendation,
 	TeamNeed,
 	TeamProfile
-} from '../types/index.js'
+} from '../types/index'
 
 interface NeedSpec {
 	/** Indexes into the frozen FEATURES ordering. */
