@@ -5,8 +5,8 @@
 // POST /api/explain/player is a disk read, so cost ≈ 0 and latency ≈ 0 on stage.
 
 import 'dotenv/config'
-import { players } from '../store.js'
-import { MODEL, explainPlayer, hasKey } from '../services/claude.service.js'
+import { players } from '../store'
+import { MODEL, explainPlayer, hasKey } from '../services/claude'
 
 if (!hasKey()) {
 	console.error(
