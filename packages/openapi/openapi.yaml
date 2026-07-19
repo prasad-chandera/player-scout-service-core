@@ -91,7 +91,133 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /players/{id}:
+    get:
+      tags: [Players]
+      summary: Get one player's scouting profile header
+      description: >
+        Returns the scouting profile header card for a single player: name, role,
+        biographical fields (where known), price band, readiness score and
+        percentile-derived scouting tags. Backed by the same Cricsheet catalogue as
+        GET /players — see src/services/playerDetails.ts.
+      operationId: getPlayerDetailsById
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PlayerId'
+      responses:
+        '200':
+          description: The player's scouting profile header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDetailsResponse'
+        '400':
+          description: Invalid or missing player id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: No player exists with this id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Cricsheet was unreachable or returned unparseable data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /players/{id}/skill-radar:
+    get:
+      tags: [Players]
+      summary: Get one player's skill radar chart data
+      description: >
+        Returns the five-axis skill radar (batting/bowling/fielding/pressure/
+        consistency, each 0-10) for a single player — see computeSkillRadar in
+        src/services/scoring.ts.
+      operationId: getPlayerSkillRadarChart
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PlayerId'
+      responses:
+        '200':
+          description: The player's skill radar scores.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerSkillRadarResponse'
+        '400':
+          description: Invalid or missing player id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: No player exists with this id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Cricsheet was unreachable or returned unparseable data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /players/{id}/economy-by-phase:
+    get:
+      tags: [Players]
+      summary: Get one player's economy-by-phase chart data
+      description: >
+        Returns powerplay/middle/death figures (economy, strike rate, wicket %, dot
+        ball %) for a single player — see computeEconomyByPhase in
+        src/services/scoring.ts.
+      operationId: getPlayerEconomyByPhaseChart
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PlayerId'
+      responses:
+        '200':
+          description: The player's economy-by-phase figures.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerEconomyByPhaseResponse'
+        '400':
+          description: Invalid or missing player id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: No player exists with this id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Cricsheet was unreachable or returned unparseable data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
+  parameters:
+    PlayerId:
+      name: id
+      in: path
+      required: true
+      description: The player's Cricsheet registry id, as returned by GET /players.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 100
+
   schemas:
     CricketFormat:
       type: string
@@ -319,3 +445,214 @@ components:
           type: object
           nullable: true
           description: Present when the error was a query-validation failure (a Zod error).
+
+    PlayerRole:
+      type: string
+      enum: [batter, bowler, allrounder]
+
+    DomesticCompetition:
+      type: string
+      enum: [ipl, smat]
+      description: '"ipl" if the player has ever played IPL, otherwise "smat".'
+
+    MatchPhase:
+      type: string
+      enum: [powerplay, middle, death]
+      description: >
+        T20 over-phase bucket: powerplay is overs 1-6, middle is overs 7-15, death is
+        overs 16-20.
+
+    EstimatedPriceRange:
+      type: object
+      required: [minLakh, maxLakh, label]
+      description: Auction-score-derived price band — a market estimate, not a historical price.
+      properties:
+        minLakh:
+          type: number
+        maxLakh:
+          type: number
+        label:
+          type: string
+          example: '₹5-10 Cr'
+
+    PlayerAge:
+      type: object
+      required: [years, days]
+      properties:
+        years:
+          type: integer
+        days:
+          type: integer
+
+    PlayerDetails:
+      type: object
+      required:
+        [
+          id,
+          name,
+          role,
+          battingHand,
+          bowlingStyle,
+          age,
+          competition,
+          matches,
+          teams,
+          currentIPLTeam,
+          imageUrl,
+          readinessScore,
+          estimatedPriceRange,
+          tags
+        ]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/PlayerRole'
+        battingHand:
+          type: string
+          enum: [right, left]
+          nullable: true
+        bowlingStyle:
+          type: string
+          nullable: true
+        age:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PlayerAge'
+        competition:
+          $ref: '#/components/schemas/DomesticCompetition'
+        matches:
+          type: integer
+        teams:
+          type: array
+          items:
+            type: string
+        currentIPLTeam:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        readinessScore:
+          type: number
+          description: 0-100 overall scouting score (the "IPL Ready" dial).
+        estimatedPriceRange:
+          $ref: '#/components/schemas/EstimatedPriceRange'
+        tags:
+          type: array
+          items:
+            type: string
+          description: >
+            Short scouting callouts (e.g. "Elite death bowling"), derived from this
+            player's percentile standing against same-role peers. Empty when nothing
+            clears the bar.
+
+    PlayerDetailsResponse:
+      type: object
+      required: [status, error, message, data]
+      properties:
+        status:
+          type: string
+          enum: [SUCCESS, FAILED]
+        error:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/PlayerDetails'
+
+    SkillRadarScores:
+      type: object
+      required: [batting, bowling, fielding, pressure, consistency]
+      description: Each axis is 0-10.
+      properties:
+        batting:
+          type: number
+        bowling:
+          type: number
+        fielding:
+          type: number
+        pressure:
+          type: number
+        consistency:
+          type: number
+
+    PlayerSkillRadar:
+      type: object
+      required: [playerId, scores]
+      properties:
+        playerId:
+          type: string
+        scores:
+          $ref: '#/components/schemas/SkillRadarScores'
+
+    PlayerSkillRadarResponse:
+      type: object
+      required: [status, error, message, data]
+      properties:
+        status:
+          type: string
+          enum: [SUCCESS, FAILED]
+        error:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/PlayerSkillRadar'
+
+    PhaseEconomyEntry:
+      type: object
+      required: [phase, economy, strikeRate, wicketPct, dotPct]
+      properties:
+        phase:
+          $ref: '#/components/schemas/MatchPhase'
+        economy:
+          type: number
+          nullable: true
+          description: Runs conceded per over. Null if no legal deliveries were bowled in this phase.
+        strikeRate:
+          type: number
+          nullable: true
+          description: Runs scored per 100 balls faced. Null if no legal deliveries were faced in this phase.
+        wicketPct:
+          type: number
+          nullable: true
+          description: Wickets taken per 100 balls bowled. Null if no legal deliveries were bowled in this phase.
+        dotPct:
+          type: number
+          nullable: true
+          description: '% of this player''s legal deliveries (batted + bowled) in the phase that were dot balls.'
+
+    PlayerEconomyByPhase:
+      type: object
+      required: [playerId, phases]
+      properties:
+        playerId:
+          type: string
+        phases:
+          type: array
+          description: Always exactly 3 entries, in powerplay, middle, death order.
+          items:
+            $ref: '#/components/schemas/PhaseEconomyEntry'
+
+    PlayerEconomyByPhaseResponse:
+      type: object
+      required: [status, error, message, data]
+      properties:
+        status:
+          type: string
+          enum: [SUCCESS, FAILED]
+        error:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/PlayerEconomyByPhase'

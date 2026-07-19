@@ -13,6 +13,14 @@
 // basis for (age, batting hand, bowling style stay null at the type level).
 
 import type { EstimatedPriceRange, PlayerRole } from '../types/players'
+import type {
+	MatchPhase,
+	PhaseEconomyEntry,
+	SkillRadarScores
+} from '../types/playerDetails'
+
+/** Iteration order also drives PhaseEconomyEntry[] order — powerplay, middle, death. */
+export const MATCH_PHASES: MatchPhase[] = ['powerplay', 'middle', 'death']
 
 /** Career-aggregate batting figures for one player in one scope (career or domestic-only). */
 export interface BattingCareerStats {
@@ -48,6 +56,33 @@ export interface FieldingStats {
 	runOuts: number
 	stumpings: number
 }
+
+/** Raw batting tally for one match phase (powerplay/middle/death), one player. */
+export interface PhaseBattingTally {
+	ballsFaced: number
+	runsScored: number
+	dotBalls: number
+}
+
+/** Raw bowling tally for one match phase, one player. */
+export interface PhaseBowlingTally {
+	ballsBowled: number
+	runsConceded: number
+	dotBalls: number
+	wickets: number
+}
+
+/** Both disciplines' raw tallies for one match phase. */
+export interface PhaseAggregate {
+	batting: PhaseBattingTally
+	bowling: PhaseBowlingTally
+}
+
+/**
+ * Per-phase raw totals folded from every legal delivery a player was involved in
+ * (../services/cricsheet.ts's creditInnings) — the input to computeEconomyByPhase.
+ */
+export type PhaseAggregates = Record<MatchPhase, PhaseAggregate>
 
 /** One innings-appearance's figures, used only for the last-5 recent-form window. */
 export interface InningsFormEntry {
@@ -416,6 +451,144 @@ export function estimatedPriceRangeFromAuctionScore(
 	if (auctionScore >= 60)
 		return { minLakh: 50, maxLakh: 200, label: '₹50L-2 Cr' }
 	return { minLakh: 20, maxLakh: 20, label: BASE_PRICE_LABEL }
+}
+
+// ----------------------------- skill radar chart ------------------------------
+
+/**
+ * Composure under pressure: a chasing batter's runs-per-innings (positive framing —
+ * scoring runs while chasing is what "handling pressure" means for a batter) blended
+ * with a bowler's death-overs economy (lower is better, hence normalizeDown). An
+ * all-rounder averages both when they have a sample for each; a role with no sample at
+ * all (e.g. a bowler who has never bowled the death overs) falls back to the neutral
+ * midpoint rather than a fabricated 0.
+ */
+function computePressureScore(
+	role: PlayerRole,
+	batting: BattingCareerStats,
+	bowling: BowlingCareerStats
+): number {
+	const battingPressure =
+		batting.innings === 0
+			? null
+			: normalizeUp(batting.runsWhileChasing / batting.innings, 15)
+	const deathOvers = bowling.deathOverBallsBowled / 6
+	const bowlingPressure =
+		deathOvers === 0
+			? null
+			: normalizeDown(bowling.deathOverRunsConceded / deathOvers, 8, 14)
+
+	if (role === 'batter') return battingPressure ?? NEUTRAL_SCORE
+	if (role === 'bowler') return bowlingPressure ?? NEUTRAL_SCORE
+	if (battingPressure === null && bowlingPressure === null) return NEUTRAL_SCORE
+	if (battingPressure === null) return bowlingPressure as number
+	if (bowlingPressure === null) return battingPressure
+	return (battingPressure + bowlingPressure) / 2
+}
+
+/**
+ * How closely recent form (last 5 innings) tracks the established career level. A big
+ * swing either way — a slump or a hot streak — scores low, since it means the player
+ * hasn't been dependable lately; sitting close to their career norm scores high.
+ */
+function computeConsistencyScore(
+	careerPerformanceScore: number,
+	recentFormScore: number
+): number {
+	return clamp(100 - Math.abs(careerPerformanceScore - recentFormScore) * 2)
+}
+
+const SKILL_RADAR_SCALE = 10
+
+/** Rescales a 0-100 score to the radar chart's 0-10 axis. */
+function toRadarScale(score: number): number {
+	return round1((clamp(score) / 100) * SKILL_RADAR_SCALE)
+}
+
+export interface SkillRadarInput {
+	role: PlayerRole
+	batting: BattingCareerStats
+	bowling: BowlingCareerStats
+	fielding: FieldingStats
+	matchesPlayed: number
+	/** Pass through the same value computed for impactScore — see computeCareerPerformanceScore. */
+	careerPerformanceScore: number
+	/** Pass through the same value computed for impactScore — see computeRecentFormScore. */
+	recentFormScore: number
+}
+
+/**
+ * The skill-radar chart's five axes, each 0-10. batting/bowling reuse the exact
+ * career-performance sub-scores impactScore is built from; fielding reuses
+ * fieldingScore. pressure and consistency are new proxies specific to this view — see
+ * their own doc comments above.
+ */
+export function computeSkillRadar(input: SkillRadarInput): SkillRadarScores {
+	const battingScore = battingCareerScore(input.batting)
+	const bowlingScore = bowlingCareerScore(input.bowling)
+	const fielding = fieldingScore(input.fielding, input.matchesPlayed)
+	const pressure = computePressureScore(
+		input.role,
+		input.batting,
+		input.bowling
+	)
+	const consistency = computeConsistencyScore(
+		input.careerPerformanceScore,
+		input.recentFormScore
+	)
+
+	return {
+		batting: toRadarScale(battingScore),
+		bowling: toRadarScale(bowlingScore),
+		fielding: toRadarScale(fielding),
+		pressure: toRadarScale(pressure),
+		consistency: toRadarScale(consistency)
+	}
+}
+
+// --------------------------- economy-by-phase chart ---------------------------
+
+/** One phase's raw tallies -> the display figures the bar chart renders. */
+function phaseEconomyEntry(
+	phase: MatchPhase,
+	aggregate: PhaseAggregate
+): PhaseEconomyEntry {
+	const overs = aggregate.bowling.ballsBowled / 6
+	const economy =
+		overs === 0 ? null : round1(aggregate.bowling.runsConceded / overs)
+	const strikeRate =
+		aggregate.batting.ballsFaced === 0
+			? null
+			: round1(
+					(aggregate.batting.runsScored / aggregate.batting.ballsFaced) * 100
+				)
+	const wicketPct =
+		aggregate.bowling.ballsBowled === 0
+			? null
+			: round1(
+					(aggregate.bowling.wickets / aggregate.bowling.ballsBowled) * 100
+				)
+
+	const totalBalls =
+		aggregate.batting.ballsFaced + aggregate.bowling.ballsBowled
+	const totalDots = aggregate.batting.dotBalls + aggregate.bowling.dotBalls
+	const dotPct =
+		totalBalls === 0 ? null : round1((totalDots / totalBalls) * 100)
+
+	return { phase, economy, strikeRate, wicketPct, dotPct }
+}
+
+/**
+ * Turns per-phase raw tallies (built during Cricsheet ingestion — see
+ * ../services/cricsheet.ts's creditInnings) into the economy-by-phase bar chart's data,
+ * always in `powerplay, middle, death` order.
+ */
+export function computeEconomyByPhase(
+	aggregates: PhaseAggregates
+): PhaseEconomyEntry[] {
+	return MATCH_PHASES.map((phase) =>
+		phaseEconomyEntry(phase, aggregates[phase])
+	)
 }
 
 export { fieldingScore }

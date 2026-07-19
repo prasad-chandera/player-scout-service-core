@@ -51,16 +51,22 @@ import config from '../configs/config'
 import {
 	computeAuctionScore,
 	computeCareerPerformanceScore,
+	computeEconomyByPhase,
 	computeImpactScore,
 	computeRecentFormScore,
+	computeSkillRadar,
 	estimatedPriceRangeFromAuctionScore,
 	fieldingScore as computeFieldingScore,
+	MATCH_PHASES,
 	type BattingCareerStats,
 	type BowlingCareerStats,
 	type DifficultyTally,
 	type FieldingStats,
 	type InningsFormEntry,
-	type MatchImpactTally
+	type MatchImpactTally,
+	type PhaseAggregates,
+	type PhaseBattingTally,
+	type PhaseBowlingTally
 } from './scoring'
 import { fetchPlayerProfiles } from './playerProfiles'
 import type {
@@ -70,6 +76,11 @@ import type {
 	DomesticCompetition,
 	PlayerRole
 } from '../types/players'
+import type {
+	MatchPhase,
+	PhaseEconomyEntry,
+	SkillRadarScores
+} from '../types/playerDetails'
 
 /** The subset of a Cricsheet match JSON file this service reads. */
 interface CricsheetMatchInfo {
@@ -194,6 +205,85 @@ function createFieldingStats(): FieldingStats {
 	return { catches: 0, runOuts: 0, stumpings: 0 }
 }
 
+function createPhaseBattingTally(): PhaseBattingTally {
+	return { ballsFaced: 0, runsScored: 0, dotBalls: 0 }
+}
+
+function createPhaseBowlingTally(): PhaseBowlingTally {
+	return { ballsBowled: 0, runsConceded: 0, dotBalls: 0, wickets: 0 }
+}
+
+/** One discipline's tallies across all 3 phases — the shape of the per-innings scratch maps below. */
+type BattingPhaseTallies = Record<MatchPhase, PhaseBattingTally>
+type BowlingPhaseTallies = Record<MatchPhase, PhaseBowlingTally>
+
+function createBattingPhaseTallies(): BattingPhaseTallies {
+	return {
+		powerplay: createPhaseBattingTally(),
+		middle: createPhaseBattingTally(),
+		death: createPhaseBattingTally()
+	}
+}
+
+function createBowlingPhaseTallies(): BowlingPhaseTallies {
+	return {
+		powerplay: createPhaseBowlingTally(),
+		middle: createPhaseBowlingTally(),
+		death: createPhaseBowlingTally()
+	}
+}
+
+function createPhaseAggregates(): PhaseAggregates {
+	return {
+		powerplay: {
+			batting: createPhaseBattingTally(),
+			bowling: createPhaseBowlingTally()
+		},
+		middle: {
+			batting: createPhaseBattingTally(),
+			bowling: createPhaseBowlingTally()
+		},
+		death: {
+			batting: createPhaseBattingTally(),
+			bowling: createPhaseBowlingTally()
+		}
+	}
+}
+
+function addBattingPhaseTally(
+	dest: PhaseBattingTally,
+	src: PhaseBattingTally
+): void {
+	dest.ballsFaced += src.ballsFaced
+	dest.runsScored += src.runsScored
+	dest.dotBalls += src.dotBalls
+}
+
+function addBowlingPhaseTally(
+	dest: PhaseBowlingTally,
+	src: PhaseBowlingTally
+): void {
+	dest.ballsBowled += src.ballsBowled
+	dest.runsConceded += src.runsConceded
+	dest.dotBalls += src.dotBalls
+	dest.wickets += src.wickets
+}
+
+/** Combines an IPL and a Syed Mushtaq Ali Trophy phase-aggregate bag — see mergeCompetitionTotals. */
+function mergePhaseAggregates(
+	a: PhaseAggregates,
+	b: PhaseAggregates
+): PhaseAggregates {
+	const result = createPhaseAggregates()
+	for (const phase of MATCH_PHASES) {
+		addBattingPhaseTally(result[phase].batting, a[phase].batting)
+		addBattingPhaseTally(result[phase].batting, b[phase].batting)
+		addBowlingPhaseTally(result[phase].bowling, a[phase].bowling)
+		addBowlingPhaseTally(result[phase].bowling, b[phase].bowling)
+	}
+	return result
+}
+
 /** Running per-competition totals for one player; never exposed directly. */
 interface CompetitionTotals {
 	matches: number
@@ -204,6 +294,8 @@ interface CompetitionTotals {
 	recentInnings: InningsFormEntry[]
 	matchImpact: MatchImpactTally
 	difficulty: DifficultyTally
+	/** Powerplay/middle/death raw tallies — see computeEconomyByPhase in scoring.ts. */
+	phases: PhaseAggregates
 }
 
 function createCompetitionTotals(): CompetitionTotals {
@@ -215,7 +307,8 @@ function createCompetitionTotals(): CompetitionTotals {
 		fielding: createFieldingStats(),
 		recentInnings: [],
 		matchImpact: { bonusPoints: 0 },
-		difficulty: { opponentMultiplierSum: 0, venueMultiplierSum: 0 }
+		difficulty: { opponentMultiplierSum: 0, venueMultiplierSum: 0 },
+		phases: createPhaseAggregates()
 	}
 }
 
@@ -283,7 +376,8 @@ function mergeCompetitionTotals(
 				a.difficulty.opponentMultiplierSum + b.difficulty.opponentMultiplierSum,
 			venueMultiplierSum:
 				a.difficulty.venueMultiplierSum + b.difficulty.venueMultiplierSum
-		}
+		},
+		phases: mergePhaseAggregates(a.phases, b.phases)
 	}
 }
 
@@ -631,6 +725,7 @@ function creditInnings(
 			sixes: number
 			dots: number
 			chaseRuns: number
+			phases: BattingPhaseTallies
 		}
 	>()
 	const bowlingInningsStats = new Map<
@@ -643,6 +738,7 @@ function creditInnings(
 			powerplayWickets: number
 			deathBalls: number
 			deathRuns: number
+			phases: BowlingPhaseTallies
 		}
 	>()
 	const battedIds = new Set<string>()
@@ -653,6 +749,11 @@ function creditInnings(
 		const overNumber = readOverNumber(over, position)
 		const isPowerplay = overNumber <= POWERPLAY_LAST_OVER
 		const isDeath = overNumber >= DEATH_FIRST_OVER
+		const phase: MatchPhase = isPowerplay
+			? 'powerplay'
+			: isDeath
+				? 'death'
+				: 'middle'
 
 		let overLegalBalls = 0
 		let overRuns = 0
@@ -674,7 +775,8 @@ function creditInnings(
 					fours: 0,
 					sixes: 0,
 					dots: 0,
-					chaseRuns: 0
+					chaseRuns: 0,
+					phases: createBattingPhaseTallies()
 				}
 				stats.runs += delivery.runs.batter
 				if (!wide) stats.balls += 1
@@ -682,6 +784,11 @@ function creditInnings(
 				if (delivery.runs.batter === 6) stats.sixes += 1
 				if (!wide && delivery.runs.total === 0) stats.dots += 1
 				if (isChasingInnings) stats.chaseRuns += delivery.runs.batter
+				stats.phases[phase].runsScored += delivery.runs.batter
+				if (!wide) {
+					stats.phases[phase].ballsFaced += 1
+					if (delivery.runs.total === 0) stats.phases[phase].dotBalls += 1
+				}
 				battingInningsStats.set(batterId, stats)
 			}
 			if (eligibleIds.has(nonStrikerId)) battedIds.add(nonStrikerId)
@@ -695,7 +802,8 @@ function creditInnings(
 					dots: 0,
 					powerplayWickets: 0,
 					deathBalls: 0,
-					deathRuns: 0
+					deathRuns: 0,
+					phases: createBowlingPhaseTallies()
 				}
 				const conceded = bowlerRunsConceded(delivery)
 				if (legal) {
@@ -705,14 +813,18 @@ function creditInnings(
 						stats.deathBalls += 1
 						stats.deathRuns += conceded
 					}
+					stats.phases[phase].ballsBowled += 1
+					if (conceded === 0) stats.phases[phase].dotBalls += 1
 				}
 				stats.runsConceded += conceded
+				stats.phases[phase].runsConceded += conceded
 				bowlingInningsStats.set(bowlerId, stats)
 
 				for (const wicket of delivery.wickets ?? []) {
 					if (BOWLER_CREDITED_DISMISSAL_KINDS.has(wicket.kind)) {
 						stats.wickets += 1
 						if (isPowerplay) stats.powerplayWickets += 1
+						stats.phases[phase].wickets += 1
 					}
 				}
 			}
@@ -777,6 +889,9 @@ function creditInnings(
 			else if (bat.runs >= HALF_CENTURY_RUNS) totals.batting.fifties += 1
 			if (isWin(teamOf.get(id))) totals.batting.runsInWins += bat.runs
 			if (isChasingInnings) totals.batting.runsWhileChasing += bat.chaseRuns
+			for (const phase of MATCH_PHASES) {
+				addBattingPhaseTally(totals.phases[phase].batting, bat.phases[phase])
+			}
 		}
 
 		if (bowl) {
@@ -788,6 +903,9 @@ function creditInnings(
 			totals.bowling.powerplayWickets += bowl.powerplayWickets
 			totals.bowling.deathOverBallsBowled += bowl.deathBalls
 			totals.bowling.deathOverRunsConceded += bowl.deathRuns
+			for (const phase of MATCH_PHASES) {
+				addBowlingPhaseTally(totals.phases[phase].bowling, bowl.phases[phase])
+			}
 		}
 
 		if (matchDate) {
@@ -1023,6 +1141,113 @@ function daysBetween(earlier: string, later: string): number {
 	)
 }
 
+/** Skill radar, economy-by-phase and scouting tags for one player — computed once per index build, never per request. */
+export interface PlayerDerivedDetails {
+	skillRadar: SkillRadarScores
+	economyByPhase: PhaseEconomyEntry[]
+	tags: string[]
+}
+
+/** A single player's derived figures plus the bare facts buildScoutingTags needs to rank them against role peers. */
+interface DerivedPlayerFacts {
+	id: string
+	role: PlayerRole
+	competition: DomesticCompetition
+	matches: number
+	economyByPhase: PhaseEconomyEntry[]
+	skillRadar: SkillRadarScores
+}
+
+interface PlayerIndexBuildResult {
+	players: CricketPlayer[]
+	derivedById: Map<string, PlayerDerivedDetails>
+}
+
+/** A player needs at least this many IPL matches for "Proven at IPL level" to mean anything. */
+const PROVEN_IPL_MATCHES = 50
+/** Percentile (of role peers) a metric must clear to earn a scouting tag. */
+const TAG_PERCENTILE_THRESHOLD = 90
+const MAX_SCOUTING_TAGS = 3
+
+/** Share of `values` strictly worse than `value` (0-100). Mirrors claude.ts's percentile helper, scoped to this pool instead of the whole catalogue. */
+function percentileRank(
+	value: number,
+	values: number[],
+	higherIsBetter: boolean
+): number {
+	if (values.length === 0) return 50
+	const below = values.filter((v) =>
+		higherIsBetter ? v < value : v > value
+	).length
+	return Math.round((below / values.length) * 100)
+}
+
+function averageOf(values: number[]): number | null {
+	return values.length === 0
+		? null
+		: values.reduce((sum, v) => sum + v, 0) / values.length
+}
+
+/**
+ * Derives short scouting callouts (e.g. "Elite death bowling") from each player's
+ * percentile standing against same-role peers in this same index build. Deliberately
+ * simple and honest about it: three straightforward thresholds, no invented statistic,
+ * capped at MAX_SCOUTING_TAGS. A player who doesn't clear any bar just gets no tags.
+ */
+function buildScoutingTags(pool: DerivedPlayerFacts[]): Map<string, string[]> {
+	const result = new Map<string, string[]>()
+
+	for (const player of pool) {
+		const peers = pool.filter(
+			(p) => p.role === player.role && p.id !== player.id
+		)
+		const tags: string[] = []
+
+		const death = player.economyByPhase.find((p) => p.phase === 'death')
+		if (typeof death?.economy === 'number') {
+			const peerDeathEconomies = peers
+				.map((p) => p.economyByPhase.find((e) => e.phase === 'death')?.economy)
+				.filter((v): v is number => typeof v === 'number')
+			if (
+				percentileRank(death.economy, peerDeathEconomies, false) >=
+				TAG_PERCENTILE_THRESHOLD
+			) {
+				tags.push('Elite death bowling')
+			}
+		}
+
+		const dotValues = player.economyByPhase
+			.map((p) => p.dotPct)
+			.filter((v): v is number => typeof v === 'number')
+		const avgDotPct = averageOf(dotValues)
+		if (avgDotPct !== null) {
+			const peerAvgDotPcts = peers
+				.map((p) =>
+					averageOf(
+						p.economyByPhase
+							.map((e) => e.dotPct)
+							.filter((v): v is number => typeof v === 'number')
+					)
+				)
+				.filter((v): v is number => v !== null)
+			if (
+				percentileRank(avgDotPct, peerAvgDotPcts, true) >=
+				TAG_PERCENTILE_THRESHOLD
+			) {
+				tags.push('Top-decile dot-ball %')
+			}
+		}
+
+		if (player.competition === 'ipl' && player.matches >= PROVEN_IPL_MATCHES) {
+			tags.push('Proven at IPL level')
+		}
+
+		result.set(player.id, tags.slice(0, MAX_SCOUTING_TAGS))
+	}
+
+	return result
+}
+
 /**
  * Downloads and parses every configured Cricsheet archive, building the in-memory
  * index of Indian IPL and Syed Mushtaq Ali Trophy players — including each player's
@@ -1030,7 +1255,7 @@ function daysBetween(earlier: string, later: string): number {
  * See the module doc for the ingestion order and why IPL is filtered against the
  * other two sources.
  */
-async function buildPlayerIndex(): Promise<CricketPlayer[]> {
+async function buildPlayerIndex(): Promise<PlayerIndexBuildResult> {
 	const index = new Map<string, PlayerIndexEntry>()
 
 	const [indiaMatches, smatMatches, iplMatches] = await Promise.all([
@@ -1077,7 +1302,10 @@ async function buildPlayerIndex(): Promise<CricketPlayer[]> {
 		return !latest || date > latest ? date : latest
 	}, undefined)
 
-	const players = Array.from(index.values()).map((entry): CricketPlayer => {
+	const players: CricketPlayer[] = []
+	const derivedFacts: DerivedPlayerFacts[] = []
+
+	for (const entry of index.values()) {
 		const competition: DomesticCompetition =
 			entry.ipl.matches > 0 ? 'ipl' : 'smat'
 		const totals = resolveScoringTotals(entry)
@@ -1148,7 +1376,7 @@ async function buildPlayerIndex(): Promise<CricketPlayer[]> {
 			domesticPerformanceScore
 		})
 
-		return {
+		players.push({
 			id: entry.id,
 			name: entry.name,
 			role,
@@ -1164,10 +1392,38 @@ async function buildPlayerIndex(): Promise<CricketPlayer[]> {
 			tags: [],
 			teams: Array.from(teams).sort(),
 			currentIPLTeam: entry.latestIplTeam ?? null
-		}
-	})
+		})
+
+		derivedFacts.push({
+			id: entry.id,
+			role,
+			competition,
+			matches: matchesPlayed,
+			economyByPhase: computeEconomyByPhase(totals.phases),
+			skillRadar: computeSkillRadar({
+				role,
+				batting: totals.batting,
+				bowling: totals.bowling,
+				fielding,
+				matchesPlayed,
+				careerPerformanceScore,
+				recentFormScore
+			})
+		})
+	}
 
 	const sortedPlayers = players.sort((a, b) => b.impactScore - a.impactScore)
+	const scoutingTagsById = buildScoutingTags(derivedFacts)
+	const derivedById = new Map<string, PlayerDerivedDetails>(
+		derivedFacts.map((facts) => [
+			facts.id,
+			{
+				skillRadar: facts.skillRadar,
+				economyByPhase: facts.economyByPhase,
+				tags: scoutingTagsById.get(facts.id) ?? []
+			}
+		])
+	)
 
 	// Deliberately not awaited: Wikidata/Wikipedia are rate-limited and a cold lookup
 	// across ~1500 players can take minutes (see playerProfiles.ts), which would make
@@ -1197,29 +1453,35 @@ async function buildPlayerIndex(): Promise<CricketPlayer[]> {
 			)
 		})
 
-	return sortedPlayers
+	return { players: sortedPlayers, derivedById }
 }
 
-let cache: { players: CricketPlayer[]; loadedAt: number } | null = null
-let inflightBuild: Promise<CricketPlayer[]> | null = null
+let cache: {
+	players: CricketPlayer[]
+	derivedById: Map<string, PlayerDerivedDetails>
+	loadedAt: number
+} | null = null
+let inflightBuild: Promise<PlayerIndexBuildResult> | null = null
 
 /**
- * Returns the cached player index, rebuilding it if it is missing or stale. Concurrent
+ * Returns the cached build result, rebuilding it if it is missing or stale. Concurrent
  * callers during a cold start or refresh share a single in-flight rebuild rather than
  * each triggering their own archive downloads.
  */
-export async function getPlayerIndex(): Promise<CricketPlayer[]> {
+async function loadPlayerIndex(): Promise<PlayerIndexBuildResult> {
 	const isFresh =
 		cache !== null &&
 		Date.now() - cache.loadedAt < config.cricsheetConfig.CRICSHEET_CACHE_TTL_MS
 
-	if (isFresh && cache) return cache.players
+	if (isFresh && cache) {
+		return { players: cache.players, derivedById: cache.derivedById }
+	}
 
 	if (!inflightBuild) {
 		inflightBuild = buildPlayerIndex()
-			.then((players) => {
-				cache = { players, loadedAt: Date.now() }
-				return players
+			.then((result) => {
+				cache = { ...result, loadedAt: Date.now() }
+				return result
 			})
 			.finally(() => {
 				inflightBuild = null
@@ -1227,6 +1489,53 @@ export async function getPlayerIndex(): Promise<CricketPlayer[]> {
 	}
 
 	return inflightBuild
+}
+
+/**
+ * Returns the cached player index, rebuilding it if it is missing or stale. Concurrent
+ * callers during a cold start or refresh share a single in-flight rebuild rather than
+ * each triggering their own archive downloads.
+ */
+export async function getPlayerIndex(): Promise<CricketPlayer[]> {
+	const { players } = await loadPlayerIndex()
+	return players
+}
+
+/**
+ * Looks up a single player by id from the same cached index GET /api/players serves —
+ * the players-list endpoint already accepts an O(players) scan per request for
+ * filtering/pagination, and this dataset (~1500 players) is small enough that a linear
+ * find here costs nothing extra.
+ */
+export async function getCricketPlayerById(
+	id: string
+): Promise<CricketPlayer | undefined> {
+	const { players } = await loadPlayerIndex()
+	return players.find((player) => player.id === id)
+}
+
+/**
+ * Returns the skill radar, economy-by-phase and scouting-tag figures derived for one
+ * player during the same index build — see ../services/playerDetails.ts, the only
+ * caller, for how these are shaped into the player-details endpoints' responses.
+ */
+export async function getPlayerDerivedDetails(
+	id: string
+): Promise<PlayerDerivedDetails | undefined> {
+	const { derivedById } = await loadPlayerIndex()
+	return derivedById.get(id)
+}
+
+/**
+ * Returns every player's derived figures keyed by id, from the same cached index build
+ * as {@link getPlayerDerivedDetails}. Used by ../services/similarPlayers.ts, which needs
+ * the skill radar of many players at once (to rank them) rather than one at a time.
+ */
+export async function getAllPlayerDerivedDetails(): Promise<
+	Map<string, PlayerDerivedDetails>
+> {
+	const { derivedById } = await loadPlayerIndex()
+	return derivedById
 }
 
 /**
