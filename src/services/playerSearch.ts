@@ -21,7 +21,17 @@
 import { GoogleGenAI } from '@google/genai'
 import { z } from 'zod/v4'
 import config from '../configs/config'
-import { getPlayerIndex } from './cricsheet'
+import {
+	getAllPlayerDerivedDetails,
+	getPlayerIndex,
+	type PlayerDerivedDetails
+} from './cricsheet'
+import { scoreNameMatch } from './playerNameMatch'
+import {
+	findSimilarPlayers,
+	PlayerNameNotRecognizedError,
+	SimilarSeedPlayerNotFoundError
+} from './similarPlayers'
 import type { CricketPlayer } from '../types/players'
 import type {
 	PlayerSearchCriteria,
@@ -40,7 +50,9 @@ export const hasKey = (): boolean =>
 // Minimum allowed deadline is 10s.") rather than just enforcing its own floor, so this
 // can't be tuned below 10s.
 const REQUEST_TIMEOUT_MS = 12000
-const DEFAULT_RESULT_LIMIT = 20
+/** Hard cap on results returned, regardless of what limit the query seems to imply — a
+ *  focused most-relevant-first list beats a long, weakly-ranked one. */
+const TOP_RESULT_LIMIT = 10
 const MAX_RESULT_LIMIT = 100
 /** Repeat/near-repeat searches (a user retrying, a UI re-querying) skip the LLM entirely. */
 const QUERY_CACHE_TTL_MS = 60 * 60 * 1000
@@ -65,6 +77,8 @@ const SORT_VALUES = [
 
 /** Validates/sanitizes the LLM's JSON output — never trust a model's structured output blindly. */
 const searchCriteriaSchema = z.object({
+	playerName: z.string().trim().min(1).max(100).nullable().catch(null),
+	similarTo: z.string().trim().min(1).max(100).nullable().catch(null),
 	role: z.enum(ROLE_VALUES).nullable().catch(null),
 	competition: z.enum(COMPETITION_VALUES).nullable().catch(null),
 	team: z.string().trim().min(1).max(100).nullable().catch(null),
@@ -72,6 +86,7 @@ const searchCriteriaSchema = z.object({
 	minPriceLakh: z.number().positive().nullable().catch(null),
 	minImpactScore: z.number().min(0).max(100).nullable().catch(null),
 	minMatches: z.number().int().min(0).nullable().catch(null),
+	keywords: z.array(z.string().trim().min(1).max(40)).max(5).catch([]),
 	sortBy: z.enum(SORT_VALUES).catch('impactScore'),
 	limit: z
 		.number()
@@ -87,6 +102,8 @@ const searchCriteriaSchema = z.object({
 const RESPONSE_JSON_SCHEMA = {
 	type: 'object',
 	properties: {
+		playerName: { type: ['string', 'null'] },
+		similarTo: { type: ['string', 'null'] },
 		role: { type: ['string', 'null'], enum: [...ROLE_VALUES, null] },
 		competition: {
 			type: ['string', 'null'],
@@ -97,11 +114,14 @@ const RESPONSE_JSON_SCHEMA = {
 		minPriceLakh: { type: ['number', 'null'] },
 		minImpactScore: { type: ['number', 'null'] },
 		minMatches: { type: ['integer', 'null'] },
+		keywords: { type: 'array', items: { type: 'string' } },
 		sortBy: { type: 'string', enum: [...SORT_VALUES] },
 		limit: { type: ['integer', 'null'] },
 		interpretation: { type: 'string' }
 	},
 	required: [
+		'playerName',
+		'similarTo',
 		'role',
 		'competition',
 		'team',
@@ -109,6 +129,7 @@ const RESPONSE_JSON_SCHEMA = {
 		'minPriceLakh',
 		'minImpactScore',
 		'minMatches',
+		'keywords',
 		'sortBy',
 		'limit',
 		'interpretation'
@@ -117,15 +138,18 @@ const RESPONSE_JSON_SCHEMA = {
 
 const SYSTEM_PROMPT = `You turn a cricket scout's free-text player search into structured filter criteria. You never see the actual player data — only the search text.
 
-Fields available on every player: role ("batter" | "bowler" | "allrounder"), competition ("ipl" | "smat" — Syed Mushtaq Ali Trophy, India's domestic T20), the teams/franchises they've played for, matches played, an impactScore from 0-100 (an overall scouting quality score — higher is better), and estimatedPriceRange (an auction-value band in Indian lakhs; 1 crore = 100 lakh).
+Fields available on every player: name, role ("batter" | "bowler" | "allrounder"), competition ("ipl" | "smat" — Syed Mushtaq Ali Trophy, India's domestic T20), the teams/franchises they've played for, matches played, an impactScore from 0-100 (an overall scouting quality score — higher is better), estimatedPriceRange (an auction-value band in Indian lakhs; 1 crore = 100 lakh), and a small set of scouting tags (short callouts like "Elite death bowling" or "Proven at IPL level" — only some players have any).
 
 Rules:
-1. Only set a field when the query actually implies it. Leave everything else null.
-2. Budget language ("under 10 crore", "within 50 lakh", "cheap", "expensive") maps to maxPriceLakh/minPriceLakh, converting crore to lakh yourself (10 crore = 1000).
-3. "Best"/"top"/"most impactful" with no other quality signal means sortBy "impactScore". "Cheapest"/"budget" means sortBy "priceAsc". "Youngest"/"uncapped"/"emerging" means sortBy "youngest".
-4. There is NO per-match-phase stat available (no separate powerplay/middle-overs/death-overs number). If the query names a phase (powerplay, death overs, middle overs, chase), do NOT invent a field for it — just set role/sortBy from the rest of the query, and say so plainly in interpretation, e.g. "Showing batters ranked by overall impact score — a powerplay-specific breakdown isn't tracked separately yet."
-5. interpretation is always a single plain sentence restating what will actually be shown, written for the person who typed the query.
-6. If the query names a specific team or franchise, put it in team (a substring is fine, e.g. "Bengaluru" for "Royal Challengers Bengaluru").`
+1. If the query asks for OTHER players who compare statistically to a named player — phrasing like "players like X", "who plays like X", "similar to X", "players comparable to X", "someone like X" — set similarTo to that player's name exactly as written (do not correct spelling, expand initials, or guess a full name) and leave playerName null. This is a different question from rule 2 below: "players like Sachin Tendulkar" wants OTHER players whose career stats compare to his, not Sachin Tendulkar himself. interpretation should restate that, e.g. "Showing players with a career profile similar to Sachin Tendulkar."
+2. Else if the query names one specific player directly (e.g. just "Virat Kohli", "MS Dhoni", "how good is Bumrah?", "stats for Sachin Tendulkar", or just a first name/fragment like "sachin") rather than asking for players by role/stat/budget or for players similar to them, set playerName to that text exactly as written — do not correct spelling, expand initials, or guess a full name — and leave role/competition/team/price/impact/matches null unless the query also states an explicit extra qualifier alongside the name. interpretation should simply restate that you're showing that player, e.g. "Showing Virat Kohli." Otherwise leave both playerName and similarTo null.
+3. For every other field, only set it when the query actually implies it. Leave everything else null.
+4. Budget language ("under 10 crore", "within 50 lakh", "cheap", "expensive") maps to maxPriceLakh/minPriceLakh, converting crore to lakh yourself (10 crore = 1000).
+5. "Best"/"top"/"most impactful" with no other quality signal means sortBy "impactScore". "Cheapest"/"budget" means sortBy "priceAsc". "Youngest"/"uncapped"/"emerging" means sortBy "youngest".
+6. There is NO per-match-phase stat available (no separate powerplay/middle-overs/death-overs number). If the query names a phase (powerplay, death overs, middle overs, chase), do NOT invent a field for it — just set role/sortBy from the rest of the query, and say so plainly in interpretation, e.g. "Showing batters ranked by overall impact score — a powerplay-specific breakdown isn't tracked separately yet."
+7. interpretation is always a single plain sentence restating what will actually be shown, written for the person who typed the query.
+8. If the query names a specific team or franchise (and no specific player), put it in team (a substring is fine, e.g. "Bengaluru" for "Royal Challengers Bengaluru").
+9. keywords is for short descriptive/style words the query uses that don't map to any field above (e.g. "death bowler" -> ["death", "bowler"], "finisher" -> ["finisher"], "proven performer" -> ["proven"]) — lowercase, each 1-2 words, at most 5. Leave it [] when nothing extra is being described.`
 
 interface QueryCacheEntry {
 	criteria: PlayerSearchCriteria
@@ -140,6 +164,8 @@ function normalizeQuery(query: string): string {
 
 function fallbackCriteria(interpretation: string): PlayerSearchCriteria {
 	return {
+		playerName: null,
+		similarTo: null,
 		role: null,
 		competition: null,
 		team: null,
@@ -147,6 +173,7 @@ function fallbackCriteria(interpretation: string): PlayerSearchCriteria {
 		minPriceLakh: null,
 		minImpactScore: null,
 		minMatches: null,
+		keywords: [],
 		sortBy: 'impactScore',
 		limit: null,
 		interpretation
@@ -186,41 +213,29 @@ async function parseSearchQuery(query: string): Promise<PlayerSearchCriteria> {
 	return criteria
 }
 
+/**
+ * Hard categorical exclusions only — role and competition are discrete facts a query
+ * explicitly names, not something a "close enough" player should sneak past. An
+ * allrounder is the one exception on role: they genuinely do both jobs, so a request for
+ * "bowlers" or "batters" still lets them through (ranked below an exact-role match by
+ * computeCriteriaRelevance below). Every other criterion (team/price/impact/matches/
+ * keywords) is a matter of degree, not a fact a player either has or doesn't, so those are
+ * scored rather than filtered — see computeCriteriaRelevance. Splitting it this way is
+ * what lets an over-narrow query (e.g. a budget nobody quite fits) still return the
+ * closest available players instead of an empty list.
+ */
 function matchesCriteria(
 	player: CricketPlayer,
 	criteria: PlayerSearchCriteria
 ): boolean {
-	if (criteria.role && player.role !== criteria.role) return false
+	if (
+		criteria.role &&
+		player.role !== criteria.role &&
+		player.role !== 'allrounder'
+	) {
+		return false
+	}
 	if (criteria.competition && player.competition !== criteria.competition) {
-		return false
-	}
-	if (
-		criteria.team &&
-		!player.teams.some((team) =>
-			team.toLowerCase().includes((criteria.team as string).toLowerCase())
-		)
-	) {
-		return false
-	}
-	if (
-		criteria.maxPriceLakh !== null &&
-		player.estimatedPriceRange.minLakh > criteria.maxPriceLakh
-	) {
-		return false
-	}
-	if (
-		criteria.minPriceLakh !== null &&
-		player.estimatedPriceRange.maxLakh < criteria.minPriceLakh
-	) {
-		return false
-	}
-	if (
-		criteria.minImpactScore !== null &&
-		player.impactScore < criteria.minImpactScore
-	) {
-		return false
-	}
-	if (criteria.minMatches !== null && player.matches < criteria.minMatches) {
 		return false
 	}
 	return true
@@ -254,15 +269,123 @@ function compareBySortOrder(
 	}
 }
 
+function clamp(value: number, min: number, max: number): number {
+	return Math.min(max, Math.max(min, value))
+}
+
+/**
+ * How well `player` satisfies the graded (non-categorical) parts of `criteria`, 0-100.
+ * matchesCriteria has already enforced role/competition as hard pass/fail facts — this
+ * scores every other criterion (team, price, impact, matches, keywords) by degree instead
+ * of pass/fail, so a player who's close on one axis still ranks reasonably instead of
+ * being excluded outright, and the top of the list is genuinely the closest match to the
+ * query rather than just whoever has the highest raw impactScore. Same 0-100 scoring
+ * convention matchScore uses in similarPlayers.ts, applied to query fit instead of
+ * player-to-player similarity.
+ */
+function computeCriteriaRelevance(
+	player: CricketPlayer,
+	criteria: PlayerSearchCriteria,
+	tags: string[]
+): number {
+	let scoreSum = 0
+	let signals = 0
+
+	if (criteria.role) {
+		scoreSum += player.role === criteria.role ? 100 : 70
+		signals += 1
+	}
+
+	if (criteria.team) {
+		const team = criteria.team.toLowerCase()
+		const exactTeam = player.teams.some((t) => t.toLowerCase() === team)
+		const partialTeam = player.teams.some((t) => t.toLowerCase().includes(team))
+		scoreSum += exactTeam ? 100 : partialTeam ? 70 : 20
+		signals += 1
+	}
+
+	if (criteria.maxPriceLakh !== null || criteria.minPriceLakh !== null) {
+		const overMax =
+			criteria.maxPriceLakh !== null
+				? Math.max(
+						0,
+						player.estimatedPriceRange.minLakh - criteria.maxPriceLakh
+					)
+				: 0
+		const underMin =
+			criteria.minPriceLakh !== null
+				? Math.max(
+						0,
+						criteria.minPriceLakh - player.estimatedPriceRange.maxLakh
+					)
+				: 0
+		const referenceBudget = criteria.maxPriceLakh ?? criteria.minPriceLakh ?? 1
+		const overshootRatio = (overMax + underMin) / referenceBudget
+		scoreSum += clamp(100 - overshootRatio * 100, 10, 100)
+		signals += 1
+	}
+
+	if (criteria.minImpactScore !== null) {
+		const margin = player.impactScore - criteria.minImpactScore
+		scoreSum += clamp(70 + margin, 10, 100)
+		signals += 1
+	}
+
+	if (criteria.minMatches !== null) {
+		const margin = player.matches - criteria.minMatches
+		scoreSum += clamp(70 + margin / 5, 10, 100)
+		signals += 1
+	}
+
+	if (criteria.keywords.length > 0) {
+		const keywordScore =
+			tags.length > 0
+				? Math.max(
+						...criteria.keywords.flatMap((keyword) =>
+							tags.map((tag) => scoreNameMatch(keyword, tag))
+						)
+					)
+				: 0
+		scoreSum += keywordScore
+		signals += 1
+	}
+
+	// No graded criteria at all (e.g. just role/competition, or an empty query) — fit is
+	// wide open, so quality alone (below) decides the ranking.
+	const fitScore = signals > 0 ? scoreSum / signals : 100
+
+	// Blend fit with overall quality so, among equally-fitting players, the stronger
+	// scout prospect still floats to the top.
+	return fitScore * 0.7 + player.impactScore * 0.3
+}
+
 function applySearchCriteria(
 	players: CricketPlayer[],
-	criteria: PlayerSearchCriteria
+	criteria: PlayerSearchCriteria,
+	derivedById: Map<string, PlayerDerivedDetails>
 ): CricketPlayer[] {
-	const limit = criteria.limit ?? DEFAULT_RESULT_LIMIT
-	return players
-		.filter((player) => matchesCriteria(player, criteria))
-		.sort(compareBySortOrder(criteria.sortBy))
-		.slice(0, limit)
+	const limit = Math.min(criteria.limit ?? TOP_RESULT_LIMIT, TOP_RESULT_LIMIT)
+	const matched = players.filter((player) => matchesCriteria(player, criteria))
+	// 'impactScore' is both the explicit "best/top" ask and the default fallback sort —
+	// in both cases, relevance to the actual query beats a single raw stat. The other
+	// sort orders (priceAsc/priceDesc/youngest/matches) are literal asks and stay literal.
+	const sorted =
+		criteria.sortBy === 'impactScore'
+			? matched.sort(
+					(a, b) =>
+						computeCriteriaRelevance(
+							b,
+							criteria,
+							derivedById.get(b.id)?.tags ?? []
+						) -
+						computeCriteriaRelevance(
+							a,
+							criteria,
+							derivedById.get(a.id)?.tags ?? []
+						)
+				)
+			: matched.sort(compareBySortOrder(criteria.sortBy))
+	return sorted.slice(0, limit)
 }
 
 /**
@@ -280,12 +403,84 @@ export async function searchPlayers(
 		)
 	}
 
-	const [criteria, allPlayers] = await Promise.all([
+	const [criteria, allPlayers, derivedById] = await Promise.all([
 		parseSearchQuery(query),
-		getPlayerIndex()
+		getPlayerIndex(),
+		getAllPlayerDerivedDetails()
 	])
 
-	const players = applySearchCriteria(allPlayers, criteria)
+	// "Players like X" / "similar to X" asks for OTHER players with a comparable career
+	// profile, not X themselves — a fundamentally different question from a name lookup
+	// (see the playerName branch below). Delegated wholesale to the existing stat-
+	// similarity engine (findSimilarPlayers in similarPlayers.ts) rather than
+	// reimplementing skill-radar/impact-score comparison here — same query text, since
+	// that engine already parses "players similar to X"-style phrasing itself.
+	if (criteria.similarTo) {
+		const limit = Math.min(criteria.limit ?? TOP_RESULT_LIMIT, TOP_RESULT_LIMIT)
+		try {
+			const similar = await findSimilarPlayers(query, limit)
+			return {
+				query,
+				interpretation:
+					criteria.interpretation ||
+					`Showing players with a career profile similar to ${similar.playerName}.`,
+				criteria,
+				players: similar.players,
+				total: similar.total
+			}
+		} catch (error) {
+			if (
+				error instanceof PlayerNameNotRecognizedError ||
+				error instanceof SimilarSeedPlayerNotFoundError
+			) {
+				return {
+					query,
+					interpretation: error.message,
+					criteria,
+					players: [],
+					total: 0
+				}
+			}
+			throw error
+		}
+	}
+
+	// A query naming a specific player (e.g. "Virat Kohli", or just a fragment like
+	// "sachin") is resolved against the catalogue by name first, rather than falling
+	// through to the generic role/price/etc. filters — which, left all null, would
+	// otherwise match every player and silently return the top-impact list instead of the
+	// player(s) asked for. scoreNameMatch is graded (see ./playerNameMatch.ts), so this
+	// returns an exact identity match on top and ranks partial/fuzzy matches below it,
+	// instead of an exact-or-nothing result.
+	if (criteria.playerName) {
+		const limit = Math.min(criteria.limit ?? TOP_RESULT_LIMIT, TOP_RESULT_LIMIT)
+		const players = allPlayers
+			.filter((player) => matchesCriteria(player, criteria))
+			.map((player) => ({
+				player,
+				score: scoreNameMatch(criteria.playerName as string, player.name)
+			}))
+			.filter(({ score }) => score > 0)
+			.sort(
+				(a, b) =>
+					b.score - a.score || b.player.impactScore - a.player.impactScore
+			)
+			.slice(0, limit)
+			.map(({ player }) => player)
+
+		return {
+			query,
+			interpretation:
+				players.length > 0
+					? criteria.interpretation
+					: `No player found matching "${criteria.playerName}".`,
+			criteria,
+			players,
+			total: players.length
+		}
+	}
+
+	const players = applySearchCriteria(allPlayers, criteria, derivedById)
 
 	return {
 		query,

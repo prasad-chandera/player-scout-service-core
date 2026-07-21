@@ -35,6 +35,7 @@ import {
 	getPlayerIndex,
 	type PlayerDerivedDetails
 } from './cricsheet'
+import { findPlayerByName } from './playerNameMatch'
 import type { CricketPlayer, PlayerRole } from '../types/players'
 import type {
 	SimilarPlayer,
@@ -141,72 +142,6 @@ export class PlayerNameNotRecognizedError extends Error {}
 
 /** The query named a player, but no catalogue player matches that name. */
 export class SimilarSeedPlayerNotFoundError extends Error {}
-
-function tokenize(name: string): string[] {
-	return name
-		.toLowerCase()
-		.split(/[^a-z0-9]+/)
-		.filter(Boolean)
-}
-
-/**
- * Reduces a block of given-name tokens to their initials. A short (<=3 character) token
- * is treated as an initials blob already, not a short real name — Cricsheet commonly
- * abbreviates two given names into one token (e.g. "MS" for "Mahendra Singh" in "MS
- * Dhoni"), and splitting it into individual letters lets it line up against a fuller
- * enriched name's per-word initials ("Mahendra Singh" -> "m" + "s" -> "ms").
- */
-function initialsOf(givenNameTokens: string[]): string {
-	return givenNameTokens
-		.map((token) => (token.length <= 3 ? token : token[0]))
-		.join('')
-}
-
-/**
- * Whole-word name equivalence for two Cricsheet-style names, robust to Cricsheet's own
- * "V Kohli"/"MS Dhoni"-style abbreviation vs. Wikidata's fuller enrichment ("Virat
- * Kohli", "Mahendra Singh Dhoni" — see ../services/playerProfiles.ts). Deliberately
- * never a raw substring test: that previously let a search for "Virat Kohli" resolve to
- * an unrelated player named "T Kohli", because the characters "t kohli" happen to appear
- * inside "virat kohli" (`"virat kohli".includes("t kohli")` is true) even though they
- * aren't the same person. Matching is surname-exact, given-name-initials-compatible.
- */
-function namesMatch(a: string, b: string): boolean {
-	const tokensA = tokenize(a)
-	const tokensB = tokenize(b)
-	if (tokensA.length === 0 || tokensB.length === 0) return false
-
-	const surnameA = tokensA[tokensA.length - 1]
-	const surnameB = tokensB[tokensB.length - 1]
-	if (surnameA !== surnameB) return false
-
-	const givenA = initialsOf(tokensA.slice(0, -1))
-	const givenB = initialsOf(tokensB.slice(0, -1))
-	// A surname-only name on either side (e.g. just "Kohli") can't disagree on a given
-	// name it never specified, so the surname match alone is enough.
-	if (!givenA || !givenB) return true
-	return givenA.startsWith(givenB) || givenB.startsWith(givenA)
-}
-
-/**
- * Finds the catalogue player `name` most plausibly refers to: an exact case-insensitive
- * match first, then the first whole-word name match (see namesMatch) — never a raw
- * substring test, which can cross word boundaries into a different person's name.
- * `players` is assumed sorted by impactScore descending (as getPlayerIndex returns it),
- * so among several genuine matches (e.g. multiple "Kohli"s), the most notable one wins.
- */
-function findSeedPlayer(
-	name: string,
-	players: CricketPlayer[]
-): CricketPlayer | undefined {
-	const normalized = name.trim().toLowerCase()
-	const exact = players.find(
-		(player) => player.name.toLowerCase() === normalized
-	)
-	if (exact) return exact
-
-	return players.find((player) => namesMatch(player.name, name))
-}
 
 /** The skill-radar chart's axes are documented as 0-10 — see SkillRadarScores in ../types/playerDetails.ts. */
 const SKILL_RADAR_MAX = 10
@@ -393,7 +328,7 @@ export async function findSimilarPlayers(
 		)
 	}
 
-	const seedPlayer = findSeedPlayer(intent.playerName, allPlayers)
+	const seedPlayer = findPlayerByName(intent.playerName, allPlayers)
 	if (!seedPlayer) {
 		throw new SimilarSeedPlayerNotFoundError(
 			`No player found matching "${intent.playerName}".`

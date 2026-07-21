@@ -17,6 +17,15 @@ export type PlayerSearchSort =
 
 /** Structured interpretation of a free-text search query, produced by the LLM. */
 export interface PlayerSearchCriteria {
+	/** Set when the query names one specific player rather than asking by role/stat/budget. */
+	playerName: string | null
+	/**
+	 * Set instead of playerName when the query asks for OTHER players with a comparable
+	 * career/skill profile to a named player (e.g. "players like Sachin Tendulkar") rather
+	 * than that player themselves. Delegated wholesale to the stat-similarity engine in
+	 * ../services/similarPlayers.ts — see searchPlayers.
+	 */
+	similarTo: string | null
 	role: PlayerRole | null
 	competition: DomesticCompetition | null
 	/** Case-insensitive substring match against any team the player has represented. */
@@ -26,6 +35,13 @@ export interface PlayerSearchCriteria {
 	minPriceLakh: number | null
 	minImpactScore: number | null
 	minMatches: number | null
+	/**
+	 * Descriptive terms from the query that don't map to any field above (a playing-style
+	 * phrase, a nickname) — fuzzy-matched against each player's scouting tags to give
+	 * queries like "death bowler" or "proven performer" some pull on ranking even though
+	 * there's no dedicated structured field for them.
+	 */
+	keywords: string[]
 	sortBy: PlayerSearchSort
 	/** How many results the query seems to want (e.g. "top 5"); defaults applied by the caller. */
 	limit: number | null
