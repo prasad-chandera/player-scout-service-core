@@ -50,10 +50,11 @@ export const hasKey = (): boolean =>
 // Minimum allowed deadline is 10s.") rather than just enforcing its own floor, so this
 // can't be tuned below 10s.
 const REQUEST_TIMEOUT_MS = 12000
-/** Hard cap on results returned, regardless of what limit the query seems to imply — a
- *  focused most-relevant-first list beats a long, weakly-ranked one. */
-const TOP_RESULT_LIMIT = 10
-const MAX_RESULT_LIMIT = 100
+/** Default page size when the caller doesn't request a specific `limit` — a focused
+ *  most-relevant-first list beats a long, weakly-ranked one by default. Callers (see
+ *  the `limit` param on searchPlayers) can ask for up to MAX_RESULT_LIMIT instead. */
+export const TOP_RESULT_LIMIT = 10
+export const MAX_RESULT_LIMIT = 100
 /** Repeat/near-repeat searches (a user retrying, a UI re-querying) skip the LLM entirely. */
 const QUERY_CACHE_TTL_MS = 60 * 60 * 1000
 
@@ -368,9 +369,12 @@ interface SearchCriteriaResult {
 function applySearchCriteria(
 	players: CricketPlayer[],
 	criteria: PlayerSearchCriteria,
-	derivedById: Map<string, PlayerDerivedDetails>
+	derivedById: Map<string, PlayerDerivedDetails>,
+	resultLimit: number
 ): SearchCriteriaResult {
-	const limit = Math.min(criteria.limit ?? TOP_RESULT_LIMIT, TOP_RESULT_LIMIT)
+	// A natural-language "top 5" narrows below the caller's page size, but never widens
+	// past it — resultLimit (the `limit` searchPlayers was called with) is the outer cap.
+	const limit = Math.min(criteria.limit ?? resultLimit, resultLimit)
 	const matched = players.filter((player) => matchesCriteria(player, criteria))
 	// 'impactScore' is both the explicit "best/top" ask and the default fallback sort —
 	// in both cases, relevance to the actual query beats a single raw stat. The other
@@ -391,7 +395,13 @@ function applySearchCriteria(
 						)
 				)
 			: matched.sort(compareBySortOrder(criteria.sortBy))
-	return { players: sorted.slice(0, limit), total: sorted.length }
+	// Capped at MAX_RESULT_LIMIT, not the raw match count — there's no pagination past
+	// MAX_RESULT_LIMIT, so reporting a higher total would describe players a caller can
+	// never actually retrieve through this API no matter what `limit` they pass.
+	return {
+		players: sorted.slice(0, limit),
+		total: Math.min(sorted.length, MAX_RESULT_LIMIT)
+	}
 }
 
 /**
@@ -399,9 +409,15 @@ function applySearchCriteria(
  * Cricsheet-backed catalogue. Throws if GOOGLE_GENAI_API_KEY isn't configured or the
  * Gemini call fails outright (timeout, network, invalid key) — the controller is
  * responsible for turning that into a clear API error, same as claude.ts's callers do.
+ *
+ * @param limit - Page size, i.e. the max number of players returned. `total` in the
+ *   result always reflects the full matched/qualifying set, which can exceed this —
+ *   callers that want more of it should pass a bigger `limit` (up to MAX_RESULT_LIMIT),
+ *   not assume `total` is itself the number of players returned.
  */
 export async function searchPlayers(
-	query: string
+	query: string,
+	limit: number = TOP_RESULT_LIMIT
 ): Promise<PlayerSearchResult> {
 	if (!hasKey()) {
 		throw new Error(
@@ -422,9 +438,9 @@ export async function searchPlayers(
 	// reimplementing skill-radar/impact-score comparison here — same query text, since
 	// that engine already parses "players similar to X"-style phrasing itself.
 	if (criteria.similarTo) {
-		const limit = Math.min(criteria.limit ?? TOP_RESULT_LIMIT, TOP_RESULT_LIMIT)
+		const resultLimit = Math.min(criteria.limit ?? limit, limit)
 		try {
-			const similar = await findSimilarPlayers(query, limit)
+			const similar = await findSimilarPlayers(query, resultLimit)
 			return {
 				query,
 				interpretation:
@@ -459,7 +475,7 @@ export async function searchPlayers(
 	// returns an exact identity match on top and ranks partial/fuzzy matches below it,
 	// instead of an exact-or-nothing result.
 	if (criteria.playerName) {
-		const limit = Math.min(criteria.limit ?? TOP_RESULT_LIMIT, TOP_RESULT_LIMIT)
+		const resultLimit = Math.min(criteria.limit ?? limit, limit)
 		const matched = allPlayers
 			.filter((player) => matchesCriteria(player, criteria))
 			.map((player) => ({
@@ -471,7 +487,7 @@ export async function searchPlayers(
 				(a, b) =>
 					b.score - a.score || b.player.impactScore - a.player.impactScore
 			)
-		const players = matched.slice(0, limit).map(({ player }) => player)
+		const players = matched.slice(0, resultLimit).map(({ player }) => player)
 
 		return {
 			query,
@@ -481,14 +497,16 @@ export async function searchPlayers(
 					: `No player found matching "${criteria.playerName}".`,
 			criteria,
 			players,
-			total: matched.length
+			// Capped at MAX_RESULT_LIMIT — see the matching comment in applySearchCriteria.
+			total: Math.min(matched.length, MAX_RESULT_LIMIT)
 		}
 	}
 
 	const { players, total } = applySearchCriteria(
 		allPlayers,
 		criteria,
-		derivedById
+		derivedById,
+		limit
 	)
 
 	return {
