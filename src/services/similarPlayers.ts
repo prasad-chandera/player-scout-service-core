@@ -337,7 +337,10 @@ export async function findSimilarPlayers(
 
 	const seedFeatures = toFeatures(derivedById.get(seedPlayer.id))
 
-	const players: SimilarPlayer[] = allPlayers
+	// Computed and ranked before slicing to `limit` so `total` below reflects every
+	// player that actually qualifies, not just how many fit on this page — otherwise
+	// total always just echoes players.length (the page size) back.
+	const qualifying = allPlayers
 		.filter((player) => player.id !== seedPlayer.id)
 		.filter((player) =>
 			passesImpactGate(seedPlayer.impactScore, player.impactScore)
@@ -356,6 +359,8 @@ export async function findSimilarPlayers(
 			minMatchScore === undefined ? true : matchScore >= minMatchScore
 		)
 		.sort((a, b) => b.matchScore - a.matchScore)
+
+	const players: SimilarPlayer[] = qualifying
 		.slice(0, limit)
 		.map(({ player, derived, matchScore }) => ({
 			...player,
@@ -370,6 +375,6 @@ export async function findSimilarPlayers(
 		playerName: intent.playerName,
 		seedPlayer: { ...seedPlayer, tags: seedDerived?.tags ?? seedPlayer.tags },
 		players,
-		total: players.length
+		total: qualifying.length
 	}
 }
