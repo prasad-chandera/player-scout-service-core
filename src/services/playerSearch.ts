@@ -359,11 +359,17 @@ function computeCriteriaRelevance(
 	return fitScore * 0.7 + player.impactScore * 0.3
 }
 
+/** The full matched-and-ranked set plus the page of it actually returned — total must reflect the former, not players.length, or it just echoes the page size back. */
+interface SearchCriteriaResult {
+	players: CricketPlayer[]
+	total: number
+}
+
 function applySearchCriteria(
 	players: CricketPlayer[],
 	criteria: PlayerSearchCriteria,
 	derivedById: Map<string, PlayerDerivedDetails>
-): CricketPlayer[] {
+): SearchCriteriaResult {
 	const limit = Math.min(criteria.limit ?? TOP_RESULT_LIMIT, TOP_RESULT_LIMIT)
 	const matched = players.filter((player) => matchesCriteria(player, criteria))
 	// 'impactScore' is both the explicit "best/top" ask and the default fallback sort —
@@ -385,7 +391,7 @@ function applySearchCriteria(
 						)
 				)
 			: matched.sort(compareBySortOrder(criteria.sortBy))
-	return sorted.slice(0, limit)
+	return { players: sorted.slice(0, limit), total: sorted.length }
 }
 
 /**
@@ -454,7 +460,7 @@ export async function searchPlayers(
 	// instead of an exact-or-nothing result.
 	if (criteria.playerName) {
 		const limit = Math.min(criteria.limit ?? TOP_RESULT_LIMIT, TOP_RESULT_LIMIT)
-		const players = allPlayers
+		const matched = allPlayers
 			.filter((player) => matchesCriteria(player, criteria))
 			.map((player) => ({
 				player,
@@ -465,8 +471,7 @@ export async function searchPlayers(
 				(a, b) =>
 					b.score - a.score || b.player.impactScore - a.player.impactScore
 			)
-			.slice(0, limit)
-			.map(({ player }) => player)
+		const players = matched.slice(0, limit).map(({ player }) => player)
 
 		return {
 			query,
@@ -476,17 +481,21 @@ export async function searchPlayers(
 					: `No player found matching "${criteria.playerName}".`,
 			criteria,
 			players,
-			total: players.length
+			total: matched.length
 		}
 	}
 
-	const players = applySearchCriteria(allPlayers, criteria, derivedById)
+	const { players, total } = applySearchCriteria(
+		allPlayers,
+		criteria,
+		derivedById
+	)
 
 	return {
 		query,
 		interpretation: criteria.interpretation,
 		criteria,
 		players,
-		total: players.length
+		total
 	}
 }
