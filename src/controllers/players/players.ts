@@ -14,9 +14,11 @@ import { z } from 'zod/v4'
 import { ApiResponse } from '../../types/common'
 import { CustomError } from '../../middleware/errorHandler'
 import { listCricketPlayers } from '../../services/cricsheet'
-import { searchPlayers } from '../../services/playerSearch'
+import { MAX_RESULT_LIMIT, searchPlayers } from '../../services/playerSearch'
 import {
+	DEFAULT_SIMILAR_PLAYERS_LIMIT,
 	findSimilarPlayers,
+	MAX_SIMILAR_PLAYERS_LIMIT,
 	PlayerNameNotRecognizedError,
 	SimilarSeedPlayerNotFoundError
 } from '../../services/similarPlayers'
@@ -108,7 +110,18 @@ export const getPlayersList = async (req: Request, res: Response) => {
 }
 
 const playersSearchQuerySchema = z.object({
-	query: z.string().trim().min(2).max(300)
+	query: z.string().trim().min(2).max(300),
+	// Defaults to the max rather than the old focused-top-10 default — a search result
+	// that shows fewer players than its own `total` claims is exactly the confusing
+	// behavior this endpoint used to have. Callers that do want a smaller page (e.g. a
+	// "top 5" UI widget) can still pass a smaller `limit` explicitly.
+	limit: z.coerce
+		.number()
+		.int()
+		.min(1)
+		.max(MAX_RESULT_LIMIT)
+		.optional()
+		.default(MAX_RESULT_LIMIT)
 })
 
 /**
@@ -120,6 +133,9 @@ const playersSearchQuerySchema = z.object({
  *
  * Query parameters:
  * - `q` (required) — the free-text search query, 2-300 characters.
+ * - `limit` (optional) — how many players to return, defaults to
+ *   {@link MAX_RESULT_LIMIT} (the max) so a search result shows everything it counts by
+ *   default; pass a smaller `limit` for a shorter, more focused page.
  */
 export const getPlayersSearch = async (req: Request, res: Response) => {
 	const response: ApiResponse & { data: PlayerSearchResult | null } = {
@@ -137,7 +153,10 @@ export const getPlayersSearch = async (req: Request, res: Response) => {
 			throw new CustomError(response.error, response.message, parsedQuery.error)
 		}
 
-		response.data = await searchPlayers(parsedQuery.data.query)
+		response.data = await searchPlayers(
+			parsedQuery.data.query,
+			parsedQuery.data.limit
+		)
 		response.status = 'SUCCESS'
 		res.json(response)
 	} catch (error) {
@@ -156,9 +175,6 @@ export const getPlayersSearch = async (req: Request, res: Response) => {
 		customError.throwError(req, res)
 	}
 }
-
-const DEFAULT_SIMILAR_PLAYERS_LIMIT = 5
-const MAX_SIMILAR_PLAYERS_LIMIT = 20
 
 const playersSimilarQuerySchema = z.object({
 	query: z.string().trim().min(2).max(300),
