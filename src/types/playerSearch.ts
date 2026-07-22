@@ -58,6 +58,13 @@ export interface PlayerSearchResult {
 	query: string
 	interpretation: string
 	criteria: PlayerSearchCriteria
+	/** Capped at the `limit` searchPlayers was called with — see `total` below. */
 	players: CricketPlayer[]
+	/**
+	 * Size of the matched set, capped at MAX_RESULT_LIMIT — never higher than what a
+	 * caller could actually retrieve by passing `limit: MAX_RESULT_LIMIT`, since there's
+	 * no pagination past that ceiling. Can still exceed players.length when `limit` is
+	 * below MAX_RESULT_LIMIT; call searchPlayers again with a bigger `limit` to see more.
+	 */
 	total: number
 }

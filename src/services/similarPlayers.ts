@@ -52,7 +52,11 @@ export const hasKey = (): boolean =>
 // Gemini enforces a 10s floor on its own deadline; see playerSearch.ts.
 const REQUEST_TIMEOUT_MS = 12000
 export const DEFAULT_SIMILAR_PLAYERS_LIMIT = 5
-export const MAX_SIMILAR_PLAYERS_LIMIT = 20
+// Was 20 — too low a ceiling meant `total` (the full qualifying set, which can run into
+// the hundreds once the impact gate lets a lot of players through) always dwarfed what a
+// caller could ever actually retrieve, with no way to ask for more. Raised to match
+// MAX_RESULT_LIMIT in playerSearch.ts so a caller can request a genuinely complete page.
+export const MAX_SIMILAR_PLAYERS_LIMIT = 100
 /** Repeat/near-repeat searches (a user retrying, a UI re-querying) skip the LLM entirely. */
 const QUERY_CACHE_TTL_MS = 60 * 60 * 1000
 
@@ -375,6 +379,9 @@ export async function findSimilarPlayers(
 		playerName: intent.playerName,
 		seedPlayer: { ...seedPlayer, tags: seedDerived?.tags ?? seedPlayer.tags },
 		players,
-		total: qualifying.length
+		// Capped at MAX_SIMILAR_PLAYERS_LIMIT, not the raw qualifying count — there's no
+		// pagination past that ceiling, so reporting a higher total would describe
+		// players a caller can never actually retrieve through this API.
+		total: Math.min(qualifying.length, MAX_SIMILAR_PLAYERS_LIMIT)
 	}
 }

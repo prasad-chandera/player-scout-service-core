@@ -44,7 +44,15 @@ export interface SimilarPlayersResult {
 	playerName: string
 	/** The catalogue player every entry in `players` was compared against. */
 	seedPlayer: CricketPlayer
-	/** Ranked by matchScore, descending. Never includes the seed player itself. */
+	/** Ranked by matchScore, descending. Never includes the seed player itself. Capped at
+	 *  the `limit` findSimilarPlayers was called with — see `total` below. */
 	players: SimilarPlayer[]
+	/**
+	 * Size of the qualifying set, capped at MAX_SIMILAR_PLAYERS_LIMIT — never higher than
+	 * what a caller could actually retrieve by passing `limit: MAX_SIMILAR_PLAYERS_LIMIT`,
+	 * since there's no pagination past that ceiling. Can still exceed players.length when
+	 * `limit` is below MAX_SIMILAR_PLAYERS_LIMIT; call again with a bigger `limit` to see
+	 * more.
+	 */
 	total: number
 }
